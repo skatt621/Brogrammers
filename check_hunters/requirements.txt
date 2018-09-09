@@ -1,2 +1,3 @@
+# Project Requirements to Install
 Django==2.0.8
 pytz==2018.5
