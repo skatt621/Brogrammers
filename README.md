@@ -43,7 +43,13 @@ These instructions are for a Windows 10 platform. While the process would be ess
     - make sure you are working in your environment
     - run the command `$ pip install -r check_hunters/requirements.txt`
 
-8. To run the project on your local machine, run 
+8. To create a superuser to be able to edit accounts to test checkpoint locally, run
+
+    `$ python manage.py createsuperuser`
+
+    and fill out with the info you would like to use for local development
+
+9. To run the project on your local machine, run 
 
     `$ cd check_hunters` 
 
