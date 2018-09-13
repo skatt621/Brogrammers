@@ -45,13 +45,13 @@ These instructions are for a Windows 10 platform. While the process would be ess
 
 8. To create a superuser to be able to edit accounts to test checkpoint locally, run
 
-    `$ python manage.py createsuperuser`
+    `$ cd check_hunters`
 
-    and fill out with the info you would like to use for local development
+    `$ python manage.py createsuperuser --username=YOUR_USERNAME --email=SOME_EMAIL@example.com`
+    
+    You will be prompted for a password twice. Once this is created, you will be able to log in to the admin page.
 
 9. To run the project on your local machine, run 
-
-    `$ cd check_hunters` 
 
     `$ python manage.py runserver`
 	
