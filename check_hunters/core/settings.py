@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -32,13 +31,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'users',  TODO
-    'accounts', 
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'core',
     'address',
     'django_tables2'
 ]
@@ -124,7 +124,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
+# NOTICE: STATICFILES_DIRS is where the static files are found
+# STATIC_ROOT is where collect_static puts the files
+# STATIC_URL is for the template files I believe
+STATICFILES_DIRS = [
+    os.path.dirname((os.path.abspath(__file__))) + "core/static/",
+]
 STATIC_URL = '/static/'
+
 
 GOOGLE_API_KEY = 'AIzaSyCrRa4ZciCAw_rOYHYJPe-2t4wn2bx2ULM'
