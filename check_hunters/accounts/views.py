@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from accounts.models import Account
 
+# account views
 class AccountListView(ListView):
     model = Account
     paginate_by = 100
@@ -19,4 +20,3 @@ class AccountCreateView(CreateView):
     model = Account
     success_url = reverse_lazy('accounts:list')
     fields = ['name', 'addr', 'routing_num', 'account_num']
-

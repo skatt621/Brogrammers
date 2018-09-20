@@ -26,7 +26,8 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div class="navbar-nav">
                 <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="{% url 'admin:accounts_account_changelist' %}">Accounts</a>
+                <a class="nav-item nav-link" href="{% url 'accounts:list' %}">Accounts</a>
+                <a class="nav-item nav-link" href="{% url 'checks:list' %}">Checks</a>
               </div>
             </div>
           </nav>
