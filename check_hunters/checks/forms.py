@@ -1,11 +1,46 @@
 # check forms
 
-from django.forms import ModelForm, widgets
 from django import forms
+from django.forms import ModelForm, widgets
+from django.urls import reverse
+from django.utils.safestring import mark_safe
+from accounts.models import Account
 from .models import Check
+from core import settings
+
+
+
+class RelatedFieldWidgetCanAdd(widgets.Select):
+
+    def __init__(self, related_model, related_url=None, *args, **kw):
+
+        super(RelatedFieldWidgetCanAdd, self).__init__(*args, **kw)
+
+        if not related_url:
+            rel_to = related_model
+            info = (rel_to._meta.app_label, rel_to._meta.object_name.lower())
+            related_url = 'admin:%s_%s_add' % info
+
+        # Be careful that here "reverse" is not allowed
+        self.related_url = related_url
+
+    def render(self, name, value, *args, **kwargs):
+        self.related_url = reverse(self.related_url)
+        output = [super(RelatedFieldWidgetCanAdd, self).render(name, value, *args, **kwargs)]
+        img = '<img src="{0}img/add_icon.png" width="10" height="10" alt="{1}"/></a>'.format(settings.STATIC_URL, "Add Another")
+        link = '<a href="{0}" class="add-another" id="add_id_{1}" onclick="return showAddAnotherPopup(this);">'.format(self.related_url, name)
+        output.append(link)
+        #  _('Add Another')
+        output.append(img)                                                                                                                               
+        return mark_safe(u''.join(output))
 
 
 class CheckCreateForm(ModelForm):
+    # from_account = forms.ModelChoiceField(
+       # required=False,
+       # queryset=Client.objects.all(),
+    #    widget=RelatedFieldWidgetCanAdd(Client, related_url="so_client_add")
+    # )
     class Meta:
         model = Check
         fields = (
@@ -14,18 +49,11 @@ class CheckCreateForm(ModelForm):
             'amount', 
             'made_date', 
             'check_num', 
-            'created_by'
             )
-        # widgets = {
-        #     'create_by': forms.HiddenInput()
-        # }
-        
+        widgets = {
+            'from_account': RelatedFieldWidgetCanAdd(Account, related_url="accounts:create")
+        }
 
-    def __init__(self, requests,  *args, **kwargs):
-        super(CheckCreateForm, self).__init__(*args, **kwargs)
-        self.fields['created_by'].initial =requests.user
-        self.fields['created_by'].widget.attrs['readonly'] = True
-        
 
 class CheckMarkPaidForm(ModelForm):
     class Meta:

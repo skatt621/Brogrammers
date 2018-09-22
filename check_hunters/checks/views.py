@@ -16,27 +16,15 @@ class CheckListView(ListView):
 
 class CheckUpdateView(UpdateView):
     model = Check
-    form = CheckMarkPaidForm
+    form_class = CheckMarkPaidForm
     success_url = reverse_lazy('checks:list')
-    fields = ['to_client', 'from_account', 'amount', 'made_date', 'check_num', 'paid']
+
 
 class CheckCreateView(CreateView):
     model = Check
     success_url = reverse_lazy('checks:list')
-    fields = ['to_client', 'from_account', 'amount', 'made_date', 'check_num', 'paid']
-    form = CheckCreateForm
+    form_class = CheckCreateForm
 
-    # def get_form_kwargs(self, *args, **kwargs):
-    #     form_kwargs = super(CheckCreateView, self).get_form_kwargs(*args, **kwargs)
-    #     form_kwargs['created_by'] = self.request.user
-    #     return form_kwargs
-        
-    def get_context_data(self, **kwargs):
-        context = super(CheckCreateView, self).get_context_data(**kwargs)
-        context['form'] = self.form(self.request)
-        # This sets the initial value for the field:
-        # print("fields: " + context['form'].fields.keys())
-        # context['form'].fields['created_by'].initial = self.request.user 
-        context['form'].fields['created_by'].initial = self.request.user.id     
-        return context
-
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
