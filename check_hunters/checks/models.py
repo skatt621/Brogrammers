@@ -23,7 +23,7 @@ class Check(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)   #  TODO doesn't work
 
     # info about payment being made
-    paid = models.BooleanField(default=False)
+    # paid = models.BooleanField(default=False)
     paid_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
@@ -31,3 +31,6 @@ class Check(models.Model):
 
     def __unicode__(self):
         return str(self.from_account) + '\t' + str(self.check_num)
+
+    def paid(self):
+        return self.paid_date != None

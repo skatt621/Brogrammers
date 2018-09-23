@@ -3,8 +3,6 @@
 
 {% block content %}
     <h1>Check</h1>
-    <!-- TODO make this an iframe -->
-    <a href="{% url 'accounts:create' %}">Add Account</a>
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Save">

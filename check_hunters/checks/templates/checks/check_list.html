@@ -4,7 +4,8 @@
 
 {% block content %}
     <h1>Checks</h1>
-    {% render_table check_list %}
+    {# render_table check_list #}
+    {% render_table table %}
 
     <a href="{% url 'checks:create' %}">Create New Check</a>
 {% endblock %}
