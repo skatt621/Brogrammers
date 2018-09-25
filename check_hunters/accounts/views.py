@@ -1,6 +1,7 @@
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 from accounts.models import Account
 
 class AccountListView(ListView):

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>Mark Check Paid</h1>
+    <p>To: {{ object.to_client.name }}</p>
+    <p>From: {{ object.from_account }}</p>
+    <p>Amount: ${{ object.amount }}</p>
+    <p>Check Number: {{object.check_num}}</p>
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}

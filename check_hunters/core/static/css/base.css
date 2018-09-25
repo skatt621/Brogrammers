@@ -1,3 +1,19 @@
 .nav {
   background-color: #f8f9fa !important;
 }
+
+#add_icon {
+  height: 20px;
+  width: 20px;
+  margin: 0px 10px;
+}
+
+span.helptext {
+  font-style: italic;
+  color: gray;
+  margin-left: 10px;
+}
+
+td {
+  padding: 0px 20px;
+}
