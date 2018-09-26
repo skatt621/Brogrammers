@@ -8,7 +8,7 @@ class ClientAdmin(admin.ModelAdmin):
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
     list_display = ['routing_num', 'account_num', 'name', 'addr']
-
-# @admin.register(Check)
-# class CheckAdmin(admin.ModelAdmin):
-#     list_display = ['from_account', 'check_num', 'paid', 'to_client', 'made_date']
+    
+@admin.register(Bank)
+class BankAdmin(admin.ModelAdmin):
+    list_display = ['routing_n', 'name']

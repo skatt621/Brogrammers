@@ -1,10 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django import forms
-
+import django_filters
 from accounts.models import Account, Client
-
-
 
 def validate_positive(num):
     return num >= 0
@@ -34,3 +32,13 @@ class Check(models.Model):
 
     def paid(self):
         return self.paid_date != None
+
+
+class CheckFilter(django_filters.FilterSet):
+    """class to filter checks for reports"""
+    made_date = django_filters.DateRangeFilter(label='Check Made Out Date')
+    paid_date = django_filters.DateRangeFilter(label='Check Paid Date')
+    
+    class Meta:
+        model = Check
+        fields = ['made_date', 'paid_date']

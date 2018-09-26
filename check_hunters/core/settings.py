@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     # 'users',  TODO
     'accounts',
     'checks', 
+    'letters',
+    'django_filters',
     'searchableselect',
     'crispy_forms',
     'django.contrib.admin',
