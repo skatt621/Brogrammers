@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<div class="check-hunters-image" style="background-image: url({% static 'img/writingcheck.jpg' %});"></div>
+
+
+<div class="check-hunters-title" >
+    <img id="logo" class="img-fluid" src="{% static 'img/logo.png' %}" alt="logo"/>
+    <button type="button" id="reports-btn" class="btn btn-primary">View Reports</button>
+</div>
+{% endblock %}
