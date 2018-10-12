@@ -1,7 +1,6 @@
 # check forms
 
-from django import forms
-from django.forms import ModelForm, widgets
+from django.forms import ModelForm, widgets, Form
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 from searchableselect.widgets import SearchableSelect
@@ -41,15 +40,25 @@ class CheckCreateForm(ModelForm):
         fields = ('to_client', 'from_account', 'amount', 'made_date', 'check_num')
         widgets = {
             'from_account': RelatedFieldWidgetCanAdd(Account, related_url="accounts:create"), # , search_field='name', model="accounts.Account"),
-            'made_date':forms.SelectDateWidget(),
+            'made_date':widgets.SelectDateWidget(),
         }
 
 
 class CheckMarkPaidForm(ModelForm):
     class Meta:
         model = Check
-        fields = ('paid_date',)
+        fields = ('amount_paid', 'paid_date')
         widgets = {
-            'paid_date':forms.SelectDateWidget(),
+            'paid_date':widgets.SelectDateWidget(),
         }
+
+        def is_valid(self):
+            valid = super(CheckMarkPaidForm, self).is_valid()
+            # we're done now if not valid
+            if not valid:
+                return valid
+            # TODO if amountpaid != amount, make sure user is supervisor or admin
+            return valid
         
+class PrintLettersForm(Form):
+    pass

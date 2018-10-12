@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    <h1>Letters</h1>
+    <form action="" method="post"  class="form"  id="print_letters_form">{% csrf_token %}
+        {{ filter.form.as_p }}
+        <input type="submit" id="print_letters_input" value="Print Letters"/>
+    </form>
+{% endblock %}
