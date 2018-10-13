@@ -86,5 +86,6 @@ __pycache__/
 local_settings.py
 
 .env
+.vscode
 db.sqlite3
 brogrammers_env/
