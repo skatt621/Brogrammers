@@ -2,8 +2,12 @@
 {% load static %}
 {% load render_table from django_tables2 %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{% static 'css/checks.css' %}"/>
+{% endblock %}
 
 {% block content %}
+<div class="checks-body">
     <h1>Checks</h1>
     <h5><a href="{% url 'checks:create' %}">Create New Check</a></h5>
     <h4>Filter Checks</h4>
@@ -15,7 +19,5 @@
     {% endif %}
 
     {% render_table table %}
+  </div>
 {% endblock %}
-
-
-
