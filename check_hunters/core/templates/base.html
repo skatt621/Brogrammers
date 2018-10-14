@@ -37,6 +37,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'checks:list' %}">Checks</a>
             </li>
+            {% if user.is_authenticated %}
+              <li>
+              <a class="nav-item nav-link right" href="{% url 'logout' %}?next=/accounts/login">Logout</a>
+             </li>
+            {% endif %}
           </ul>
         </div>
       </nav>

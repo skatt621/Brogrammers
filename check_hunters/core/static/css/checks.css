@@ -1,4 +1,8 @@
-.checks-body {
+body {
   text-align: center;
   margin: 0 auto;
+}
+
+form {
+  display: inline-block;
 }

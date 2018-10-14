@@ -4,6 +4,7 @@ from django import forms
 import django_filters
 from accounts.models import Account, Client
 from django.forms import SelectDateWidget
+from datetime import datetime
 
 def validate_positive(num):
     return num >= 0
@@ -23,7 +24,22 @@ class Check(models.Model):
 
     # info about payment being made
     # paid = models.BooleanField(default=False)
+    amount_paid = models.DecimalField(max_digits=18, decimal_places=2, default=0, validators=[validate_positive])
     paid_date = models.DateField(null=True, blank=True)
+
+    # letter dates
+    letter_1_send_date = models.DateField(null=True, blank=True)
+    letter_2_send_date = models.DateField(null=True, blank=True)
+    letter_3_send_date = models.DateField(null=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.created_date:
+            self.created_date = datetime.today()
+        if not (self.letter_1_send_date and self.letter_2_send_date and self.letter_3_send_date):
+            self.letter_1_send_date = self.created_date + self.to_client.wait_period
+            self.letter_2_send_date = self.created_date + 2 * self.to_client.wait_period
+            self.letter_3_send_date = self.created_date + 3 * self.to_client.wait_period
+        super(Check, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.from_account) + '\t' + str(self.check_num)
