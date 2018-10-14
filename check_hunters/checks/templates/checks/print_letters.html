@@ -9,10 +9,15 @@
         {% endfor %}
     </ul>
     {% endif %}
-    
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-10 offset-sm-1 offset-md-3 col-md-6">
     <h1>Letters</h1>
     <form action="" method="post"  class="form"  id="print_letters_form">{% csrf_token %}
         {{ filter.form.as_p }}
         <input type="submit" id="print_letters_input" value="Print Letters"/>
     </form>
+  </div>
+</div>
+</div>
 {% endblock %}

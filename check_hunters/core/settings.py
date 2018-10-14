@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # 'users',  TODO
     'accounts',
-    'checks', 
+    'checks',
     'letters',
     'django_filters',
     'searchableselect',
@@ -136,5 +136,6 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 
 GOOGLE_API_KEY = 'AIzaSyCrRa4ZciCAw_rOYHYJPe-2t4wn2bx2ULM'
+
 
 LOGIN_REDIRECT_URL = '/'

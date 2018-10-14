@@ -20,10 +20,10 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    re_path(r'^$', login_required(TemplateView.as_view(template_name='base.html')), name='home'),
+    re_path(r'^$', login_required(TemplateView.as_view(template_name='home.html')), name='home'),
     re_path(r'accounts/', include('django.contrib.auth.urls')),
     re_path(r'admin/', admin.site.urls),
     re_path(r'check_accounts/', include('accounts.urls')),
     re_path(r'checks/', include('checks.urls')),
-    re_path('^searchableselect/', include('searchableselect.urls')),
+    #re_path('^searchableselect/', include('searchableselect.urls')),
 ]
