@@ -5,3 +5,7 @@ gunicorn==19.9.0
 psycopg2==2.7.5
 pytz==2018.5
 whitenoise==4.1
+django-filter==2.0.0
+django-address==0.2.0
+django-crispy-forms==1.2.2
+django-tables2==1.21.2
