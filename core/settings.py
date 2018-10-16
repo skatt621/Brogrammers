@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,11 +131,15 @@ USE_TZ = True
 # NOTICE: STATICFILES_DIRS is where the static files are found
 # STATIC_ROOT is where collect_static puts the files
 # STATIC_URL is for the template files I believe
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'staticfiles')
 STATICFILES_DIRS = [
     os.path.dirname((os.path.abspath(__file__))) + "core/static/",
 ]
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = "whitenoise.django.GzipManifestStaticFilesStorage"
 
 GOOGLE_API_KEY = 'AIzaSyCrRa4ZciCAw_rOYHYJPe-2t4wn2bx2ULM'
 
 LOGIN_REDIRECT_URL = '/'
+
+django_heroku.settings(locals())
