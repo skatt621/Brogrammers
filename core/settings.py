@@ -133,7 +133,7 @@ USE_TZ = True
 # STATIC_URL is for the template files I believe
 STATIC_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.dirname((os.path.abspath(__file__))) + "core/static/",
+    os.path.dirname((os.path.abspath(__file__))) + "/static/",
 ]
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = "whitenoise.django.GzipManifestStaticFilesStorage"
