@@ -1,1 +1,1 @@
-web: gunicorn check_hunters.wsgi --log-file -
+web: gunicorn check_hunters.core.wsgi --log-file -
