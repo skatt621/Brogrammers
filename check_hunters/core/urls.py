@@ -25,5 +25,6 @@ urlpatterns = [
     re_path(r'admin/', admin.site.urls),
     re_path(r'check_accounts/', include('accounts.urls')),
     re_path(r'checks/', include('checks.urls')),
+    re_path(r'reports/', include('reports.urls')),
     #re_path('^searchableselect/', include('searchableselect.urls')),
 ]

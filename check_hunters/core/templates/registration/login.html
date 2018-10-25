@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-10 offset-sm-1 offset-md-3 col-md-6">
 {% block nav %}{% endblock %}
-<h1>Log In to Chuck Hunters</h1>
+<h1>Log in to Check Hunters</h1>
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -24,5 +28,9 @@
 </form>
 
     <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+  </div>
+</div>
+</div>
 
 {% endblock %}
