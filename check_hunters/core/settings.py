@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'accounts',
     'checks',
     'letters',
+    'reports',
     'django_filters',
     'searchableselect',
     'crispy_forms',
