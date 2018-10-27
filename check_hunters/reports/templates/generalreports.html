@@ -23,7 +23,7 @@
       </div>
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-md-1 col-md-10">
-            <div class="graph"></div>
+            <div class="graph" id="graph"></div>
         </div>
       </div>
       <div class="row">
@@ -43,6 +43,8 @@
       var queryString = "";
       var numQueryStringParameters = 0;
 
+      // handles a form submit, iterating over the elements starting at box 1 until a non-input box is found and creating
+      // a query string from it
       function submitForm() {
         var i;
         for(i = 1; i < document.getElementById("form").elements.length; ++i){
@@ -62,25 +64,37 @@
 
       }
 
+      // add an event listener to the submitting of the form to create a query string
       document.getElementById("form").addEventListener("submit", function(event){
         event.preventDefault();
         numQueryStringParameters = 0;
+        document.getElementById("graph").innerHTML = "";
+        submitForm();
+        createDonutChart();
      });
 
+    // create the donut template
     var donut = donutChart()
         .width(960)
         .height(500)
-        .cornerRadius(3) // sets how rounded the corners are on each slice
-        .padAngle(0.015) // effectively dictates the gap between slices
+        .cornerRadius(3)
+        .padAngle(0.015)
         .variable('Count')
         .category('Name');
 
+    // create the donut chart using the data from the query parameters
+    function createDonutChart() {
     d3.json("{% url 'reports:report_data' %}" + queryString, function(error, data) {
         if (error) throw error;
         d3.select('.graph')
-            .datum(data) // bind data to the div
-            .call(donut); // draw chart in div
+            .datum(data)
+            .call(donut);
     });
+  }
+
+  //initialize the donut chart when loading the page
+  window.onload = createDonutChart;
+
   </script>
 
 {% endblock %}

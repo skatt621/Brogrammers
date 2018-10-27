@@ -10,7 +10,7 @@ def general_report(request):
     return render(request, 'generalreports.html', {'form': form})
 
 def report_data(request):
-    print(request)
+
     data = [
       {
         "Name": "Bank A",
