@@ -56,3 +56,10 @@ These instructions are for a Windows 10 platform. While the process would be ess
     `$ python manage.py runserver`
 	
     and go to localhost:8000 to check it out
+
+# Management Commands
+
+## Populating the database
+
+- cd to the `check_hunters` folder
+- run the command `python manage.py populate_db`
