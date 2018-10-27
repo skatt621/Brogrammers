@@ -30,8 +30,10 @@ class Bank(models.Model):
 
     def __unicode__(self):
         return self.routing_n
-    def name(self):
+
+    def make_name(self):
         return "bank" +  self.routing_n
+        
     def routing_num_is_valid(self):
         """checks if routing_num is correct"""
         # TODO 
