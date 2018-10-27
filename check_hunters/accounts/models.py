@@ -63,7 +63,7 @@ class Account(models.Model):
         base = ""
         if self.routing_num:
             base =  self.routing_num.routing_n
-        return base + ':' + self.account_num
+        return f"{base}:{self.account_num}"
 
     def __unicode__(self):
         base = ""
