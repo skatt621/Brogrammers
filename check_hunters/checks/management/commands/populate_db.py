@@ -129,8 +129,6 @@ class Command(BaseCommand):
             for x in range(0,4):
                 account_dets['account_num'] = (x * 4) + i
                 account, new = Account.objects.update_or_create(**account_dets)
-                account.save()
-                print(account, new, Account.objects.all().count())
                 check_dets['from_account'] = account
                 check_dets['made_date'] = datetime.today() - timedelta(days =  x * 5)
                 check_dets['check_num'] = (x * 4) + i

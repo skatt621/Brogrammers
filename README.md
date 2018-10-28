@@ -63,3 +63,10 @@ These instructions are for a Windows 10 platform. While the process would be ess
 
 - cd to the `check_hunters` folder
 - run the command `python manage.py populate_db`
+
+# Testing
+## Run tests through link
+- cd to the "Brogrammers" folder
+- run 
+	`$ python manage.py runserver`
+- go to localhost:8000/utests to run unit tests and receive results
