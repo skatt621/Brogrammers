@@ -19,11 +19,39 @@ from django.urls import re_path, include, path
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 
+from django.http import HttpResponse
+import datetime
+from django.core.management import execute_from_command_line
+import subprocess
+
+def current_datetime(request):
+
+    resultacc = subprocess.run(['python', 'check_hunters\\manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
+    stringacc = ''.join(resultacc.stderr.decode('utf-8'))
+    resultchck = subprocess.run(['python', 'check_hunters\\manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
+    stringchck = ''.join(resultchck.stderr.decode('utf-8'))
+    resultlett = subprocess.run(['python', 'check_hunters\\manage.py', 'test', 'letters'], stderr=subprocess.PIPE)
+    stringlett = ''.join(resultlett.stderr.decode('utf-8'))
+
+    bigstringacc = "Client, Account, and Bank tests:\n" + stringacc + "\n\n\n\n\n\n\n\n\n\n"
+    bigstringchck = "Check tests:\n" + stringchck + "\n\n\n\n\n\n\n\n\n\n"
+    bigstringlett = "Letter tests:\n" + stringlett + "\n\n\n\n\n\n\n\n\n\n"
+    string = bigstringacc + bigstringchck + bigstringlett
+
+    # now = datetime.datetime.now()
+    # html = "<html><body>It is now %s.</body></html>" % now
+    html1 = "<html><h1>%s</h1><br><br><br><br><br>" % bigstringacc
+    html2 = "<h1>%s</h1><br><br><br><br><br>" % bigstringchck
+    html3 = "<h1>%s</h1></html><br><br><br><br><br>" % bigstringlett
+    html = html1 + html2 + html3
+    return HttpResponse(html)
+
 urlpatterns = [
     re_path(r'^$', login_required(TemplateView.as_view(template_name='home.html')), name='home'),
     re_path(r'accounts/', include('django.contrib.auth.urls')),
     re_path(r'admin/', admin.site.urls),
     re_path(r'check_accounts/', include('accounts.urls')),
     re_path(r'checks/', include('checks.urls')),
+     path('utests', current_datetime)
     #re_path('^searchableselect/', include('searchableselect.urls')),
 ]
