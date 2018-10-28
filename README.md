@@ -18,7 +18,7 @@ These instructions are for a Windows 10 platform. While the process would be ess
 
     `git push origin [YourBranchName]`
 
-3. Make sure you have Python3.4 & pip installed
+3. Make sure you have Python3.6 & pip installed
 
 4. Make sure you have `virtualenvwrapper-win` installed
 
@@ -56,3 +56,17 @@ These instructions are for a Windows 10 platform. While the process would be ess
     `$ python manage.py runserver`
 	
     and go to localhost:8000 to check it out
+
+# Management Commands
+
+## Populating the database
+
+- cd to the `check_hunters` folder
+- run the command `python manage.py populate_db`
+
+# Testing
+## Run tests through link
+- cd to the "Brogrammers" folder
+- run 
+	`$ python manage.py runserver`
+- go to localhost:8000/utests to run unit tests and receive results
