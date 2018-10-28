@@ -35,7 +35,7 @@ class Bank(models.Model):
         
     def routing_num_is_valid(self):
         """checks if routing_num is correct"""
-        # TODO 
+        # TODO
         return True
 
 
@@ -45,7 +45,6 @@ class Account(models.Model):
     first_name2 = models.CharField(max_length=200, blank=True, null=True)
     last_name2 = models.CharField(max_length=200, blank=True, null=True)
     
-    # addr = AddressField(on_delete=models.CASCADE) 
     street_addr = models.CharField(max_length=200, default='')
     city_addr = models.CharField(max_length=200, default='')
     state_addr = models.CharField(max_length=200, default='')
@@ -54,7 +53,7 @@ class Account(models.Model):
     routing_num = models.ForeignKey(Bank, on_delete=models.SET(None), null=True)
     account_num = models.CharField(max_length=50)
     phone_num = models.CharField(max_length=20, null=True)
-    
+
     class Meta:
         unique_together = ('routing_num', 'account_num')
 

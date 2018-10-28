@@ -10,6 +10,6 @@
 
 <div class="check-hunters-title" >
     <img id="logo" class="img-fluid" src="{% static 'img/logo.png' %}" alt="logo"/>
-    <button type="button" id="reports-btn" class="btn btn-primary">View Reports</button>
+    <button type="button" onclick="location.href = {% url 'reports:general_report' %}" id="reports-btn" class="btn btn-primary">View Reports</button>
 </div>
 {% endblock %}
