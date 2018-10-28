@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     # 'users',  TODO
     'accounts',
     'checks',
-    'letters',
     'reports',
     'django_filters',
     'searchableselect',
@@ -132,7 +131,7 @@ USE_TZ = True
 # STATIC_ROOT is where collect_static puts the files
 # STATIC_URL is for the template files I believe
 STATICFILES_DIRS = [
-    os.path.dirname((os.path.abspath(__file__))) + "core/static/",
+    os.path.dirname((os.path.abspath(__file__))) + "/static/",
 ]
 STATIC_URL = '/static/'
 
