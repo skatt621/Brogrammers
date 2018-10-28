@@ -25,25 +25,42 @@ from django.core.management import execute_from_command_line
 import subprocess
 
 def current_datetime(request):
+    from django.template import Template, Context
 
-    resultacc = subprocess.run(['python', 'check_hunters\\manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
+    resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
     stringacc = ''.join(resultacc.stderr.decode('utf-8'))
-    resultchck = subprocess.run(['python', 'check_hunters\\manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
+    resultchck = subprocess.run(['python', 'manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
     stringchck = ''.join(resultchck.stderr.decode('utf-8'))
-    resultlett = subprocess.run(['python', 'check_hunters\\manage.py', 'test', 'letters'], stderr=subprocess.PIPE)
-    stringlett = ''.join(resultlett.stderr.decode('utf-8'))
 
-    bigstringacc = "Client, Account, and Bank tests:\n" + stringacc + "\n\n\n\n\n\n\n\n\n\n"
-    bigstringchck = "Check tests:\n" + stringchck + "\n\n\n\n\n\n\n\n\n\n"
-    bigstringlett = "Letter tests:\n" + stringlett + "\n\n\n\n\n\n\n\n\n\n"
-    string = bigstringacc + bigstringchck + bigstringlett
+    # bigstringacc = "Client, Account, and Bank tests:" + stringacc
+    # bigstringchck = "Check tests:\n" + stringchck
+    # bigstringlett = "Letter tests:\n" + stringlett
+    # string = bigstringacc + bigstringchck + bigstringlett
+
+    page = f""""
+    {{% extends "base.html" %}}
+    {{% load static %}}
+    {{% block stylesheets %}}
+    <link rel="stylesheet" href="{{% static 'css/home.css' %}}"/>
+    {{% endblock %}}
+    {{% block content %}}
+    <h1>Unit Test Summaries</h1>
+    <ul>
+    <li>Client, Account, and Bank Tests: </br> {stringacc.replace('.', '').replace('-', '')}</li>
+    <li>CheckTests: </br> {stringchck.replace('.', '').replace('-', '')}</li>
+    </ul>
+    {{% endblock content %}}
+    """
+    t = Template(page)
+    html = t.render(Context())
+    return HttpResponse(html)
 
     # now = datetime.datetime.now()
     # html = "<html><body>It is now %s.</body></html>" % now
-    html1 = "<html><h1>%s</h1><br><br><br><br><br>" % bigstringacc
-    html2 = "<h1>%s</h1><br><br><br><br><br>" % bigstringchck
-    html3 = "<h1>%s</h1></html><br><br><br><br><br>" % bigstringlett
-    html = html1 + html2 + html3
+    # html1 = "<html><h1>%s</h1><br><br><br><br><br>" % bigstringacc
+    # html2 = "<h1>%s</h1><br><br><br><br><br>" % bigstringchck
+    # html3 = "<h1>%s</h1></html><br><br><br><br><br>" % bigstringlett
+    # html = html1 + html2 + html3
     return HttpResponse(html)
 
 urlpatterns = [
