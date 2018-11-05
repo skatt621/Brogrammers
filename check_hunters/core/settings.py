@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core',
     'address',
     'django_tables2',
+    'reportlab',
     # 'django.core.context_processors.request',
 ]
 

@@ -31,8 +31,16 @@ class Check(models.Model):
     letter_1_send_date = models.DateField(null=True, blank=True)
     letter_2_send_date = models.DateField(null=True, blank=True)
     letter_3_send_date = models.DateField(null=True, blank=True)
-    
+
+    def name(self):
+        account = self.account
+        name_str = f"{account.first_name1} {account.last_name1}"
+        if account.last_name2 and account.first_name2:
+            name_str += f"and {account.first_name2} {account.last_name2}"
+        return name_str
+        
     def save(self, *args, **kwargs):
+        """overriding save to set date values"""
         if not self.created_date:
             self.created_date = datetime.today()
         if not (self.letter_1_send_date and self.letter_2_send_date and self.letter_3_send_date):
@@ -52,7 +60,7 @@ class Check(models.Model):
 
 
 class CheckFilter(django_filters.FilterSet):
-    """class to filter checks for reports"""
+    """class to filter checks for reports / list views"""
     made_date_start = django_filters.DateFilter(label='Made Out Start Date', field_name='made_date', lookup_expr='gte', widget=SelectDateWidget)
     made_date_end = django_filters.DateFilter(label='Made Out End Date', field_name='made_date', lookup_expr='lte', widget=SelectDateWidget)
     

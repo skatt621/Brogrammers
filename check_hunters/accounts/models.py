@@ -4,6 +4,10 @@ from address.models import AddressField
 from datetime import timedelta
 
 class Client(models.Model):
+    """
+    Client model. this makes the client table and represents a Client company using the Check Hunter Services
+    Client model allows companies to configure their wait_period and late fee
+    """
     name = models.CharField(max_length=200)
     wait_period = models.DurationField(blank=True, default=timedelta(days=10))
     late_fee = models.DecimalField(max_digits=15, decimal_places=2, blank=True, default=25)
@@ -18,6 +22,9 @@ class Client(models.Model):
 
 
 class Bank(models.Model):
+    """
+    Bank model. this makes the bank table and represents the routing number of a checking account that owes a client company money.
+    """
     routing_n = models.CharField(max_length=50, unique=True)
     name = models.CharField(max_length=500, default="bank")
     address = models.CharField(max_length=200, blank=True, null=True)
@@ -40,6 +47,9 @@ class Bank(models.Model):
 
 
 class Account(models.Model):
+    """
+    Account model. this model represents a checking account of a bounced check and makes the Account table.
+    """
     first_name1 = models.CharField(max_length=200)
     last_name1 = models.CharField(max_length=200, default='')
     first_name2 = models.CharField(max_length=200, blank=True, null=True)
@@ -55,7 +65,7 @@ class Account(models.Model):
     phone_num = models.CharField(max_length=20, null=True)
 
     class Meta:
-        unique_together = ('routing_num', 'account_num')
+        unique_together = ('routing_num', 'account_num')    # can have accounts with matching bank numbers as long as the account number is diff and vice versa
 
     def __str__(self):
         base = ""
