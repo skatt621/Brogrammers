@@ -37,12 +37,12 @@ class CheckUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class CheckCreateView(LoginRequiredMixin, CreateView):
-    # redirect_field_name = 'checks:create'
     model = Check
     success_url = reverse_lazy('checks:list')
     form_class = CheckCreateForm
 
     def form_valid(self, form):
+        """override form_valid to associate it with the current user that created it"""
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
@@ -52,13 +52,26 @@ class PrintLettersView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('checks:print_letters')
 
     def post(self, request, *args, **kwargs):
+        # get all the data needed to make the letters
         letters_data = GetLettersData(request.user)
-        letter_count = len(letters_data['first_letters']) + len(letters_data['second_letters']) + len(letters_data['third_letters'])
-        messages.success(request, 'Would have printed ' + str(letter_count) + ' letters')
+        # get summary data to give the user an idea of what output to exepect (and for debugging)
+        letter_1_count = len(letters_data['first_letters'])
+        letter_2_count = len(letters_data['second_letters'])
+        letter_3_count = len(letters_data['third_letters'])
+        letter_count = letter_1_count + letter_2_count + letter_3_count
+        # messages.success(request, 'Would have printed ' + str(letter_count) + ' letters')
         
-        success_printing_letters = PopulateTemplate(letters_data)
-        form = self.form_class(request.POST)
-        form.is_valid()
-        if not success_printing_letters:
-            form.errors['printing'] = "failed to print letters"
-        return super(PrintLettersView, self).post(request, *args, **kwargs)
+        if letter_count != 0:
+            messages.success(request, f"Printing {letter_1_count} 1st letters, {letter_2_count} 2nd letters, & {letter_3_count} 3rd letters")
+            # make and print the letters
+            success_printing_letters, response = PopulateTemplate(letters_data)
+
+            # indicate if they were successfully printed or not
+            form = self.form_class(request.POST)
+            form.is_valid()
+            if not success_printing_letters:
+                form.errors['printing'] = "failed to print letters"
+            # return super(PrintLettersView, self).post(request, *args, **kwargs)
+            return response
+        else:
+            return super(PrintLettersView, self).post(request, *args, **kwargs)

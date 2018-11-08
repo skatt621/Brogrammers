@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import *
 
+# makes admin pages for the client, account and bank tables 
+
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ['name', 'wait_period', 'late_fee', 'address', 'phone_num']

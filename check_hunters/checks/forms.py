@@ -12,7 +12,7 @@ from core import settings
 class RelatedFieldWidgetCanAdd(widgets.Select):   # TODO SearchableSelect
 
     def __init__(self, related_model, related_url=None, *args, **kw):
-
+        """overriding init to add create new FK object link"""
         super(RelatedFieldWidgetCanAdd, self).__init__(*args, **kw)
 
         if not related_url:
@@ -23,8 +23,8 @@ class RelatedFieldWidgetCanAdd(widgets.Select):   # TODO SearchableSelect
         self.related_url = related_url
 
     def render(self, name, value, *args, **kwargs):
+        """overriding to add create new button"""
         self.related_url = reverse(self.related_url)
-        #self.render = kwargs.pop('render')
         output = [super(RelatedFieldWidgetCanAdd, self).render(name, value, *args, **kwargs)]
         img = '<img src="{0}img/add_icon.png" class="icon" id="add_icon" width="10" height="10" alt="{1}"/></a>'.format(settings.STATIC_URL, "Add Another")
         link = '<a href="{0}" class="add-another" id="add_id_{1}" onclick="return showAddAnotherPopup(this);">'.format(self.related_url, name)
@@ -34,7 +34,7 @@ class RelatedFieldWidgetCanAdd(widgets.Select):   # TODO SearchableSelect
 
 
 class CheckCreateForm(ModelForm):
-
+    """Overriding create form to have option to create a new account directly"""
     class Meta:
         model = Check
         fields = ('to_client', 'from_account', 'amount', 'made_date', 'check_num')
@@ -45,6 +45,7 @@ class CheckCreateForm(ModelForm):
 
 
 class CheckMarkPaidForm(ModelForm):
+    """Overriding update form so only editable fields are amount and date paid"""
     class Meta:
         model = Check
         fields = ('amount_paid', 'paid_date')
@@ -61,4 +62,5 @@ class CheckMarkPaidForm(ModelForm):
             return valid
         
 class PrintLettersForm(Form):
+    """form that starts batch print process when posted to"""
     pass
