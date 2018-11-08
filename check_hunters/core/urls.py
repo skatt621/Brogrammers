@@ -29,8 +29,13 @@ def current_datetime(request):
 
     resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
     stringacc = ''.join(resultacc.stderr.decode('utf-8'))
+    index = stringacc.find("Ran")
+    stringacc = stringacc[index:]
+
     resultchck = subprocess.run(['python', 'manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
     stringchck = ''.join(resultchck.stderr.decode('utf-8'))
+    index = stringchck.find("Ran")
+    stringchck = stringchck[index:]
 
     # bigstringacc = "Client, Account, and Bank tests:" + stringacc
     # bigstringchck = "Check tests:\n" + stringchck
@@ -47,7 +52,7 @@ def current_datetime(request):
     <h1>Unit Test Summaries</h1>
     <ul>
     <li>Client, Account, and Bank Tests: </br> {stringacc.replace('.', '').replace('-', '')}</li>
-    <li>CheckTests: </br> {stringchck.replace('.', '').replace('-', '')}</li>
+    <li>Check Tests: </br> {stringchck.replace('.', '').replace('-', '')}</li>
     </ul>
     {{% endblock content %}}
     """
