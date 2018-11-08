@@ -9,6 +9,9 @@ from datetime import datetime
 def validate_positive(num):
     return num >= 0
 
+def validate_num(num_str):
+    return num_str.isdigit()
+
 
 class Check(models.Model):
     # info on check
@@ -23,7 +26,6 @@ class Check(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)   #  TODO doesn't work
 
     # info about payment being made
-    # paid = models.BooleanField(default=False)
     amount_paid = models.DecimalField(max_digits=18, decimal_places=2, default=0, validators=[validate_positive])
     paid_date = models.DateField(null=True, blank=True)
 
@@ -31,12 +33,15 @@ class Check(models.Model):
     letter_1_send_date = models.DateField(null=True, blank=True)
     letter_2_send_date = models.DateField(null=True, blank=True)
     letter_3_send_date = models.DateField(null=True, blank=True)
+    letter_1_sent = models.BooleanField(null=True, blank=True, default=False)
+    letter_2_sent = models.BooleanField(null=True, blank=True, default=False)
+    letter_3_sent = models.BooleanField(null=True, blank=True, default=False)
 
     def name(self):
-        account = self.account
+        account = self.from_account
         name_str = f"{account.first_name1} {account.last_name1}"
         if account.last_name2 and account.first_name2:
-            name_str += f"and {account.first_name2} {account.last_name2}"
+            name_str += f" and {account.first_name2} {account.last_name2}"
         return name_str
         
     def save(self, *args, **kwargs):
@@ -44,9 +49,9 @@ class Check(models.Model):
         if not self.created_date:
             self.created_date = datetime.today()
         if not (self.letter_1_send_date and self.letter_2_send_date and self.letter_3_send_date):
-            self.letter_1_send_date = self.created_date + self.to_client.wait_period
-            self.letter_2_send_date = self.created_date + 2 * self.to_client.wait_period
-            self.letter_3_send_date = self.created_date + 3 * self.to_client.wait_period
+            self.letter_1_send_date = self.created_date
+            self.letter_2_send_date = self.created_date + self.to_client.wait_period
+            self.letter_3_send_date = self.created_date + 2 * self.to_client.wait_period
         super(Check, self).save(*args, **kwargs)
 
     def __str__(self):

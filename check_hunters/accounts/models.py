@@ -2,6 +2,30 @@ from django.db import models
 from django.urls import reverse
 from address.models import AddressField
 from datetime import timedelta
+# from checks.models import validate_num, validate_positive
+
+
+def validate_positive(num):
+    return num >= 0
+
+def validate_num(num_str):
+    return num_str.isdigit()
+    
+LETTER_TEMPLATE = """
+{recipient_name}
+{st_addr}
+{city}, {state} {zip}
+
+{date}
+
+Dear {recipient_name}:
+
+Check {check_num} you wrote for ${check_amt}, dated {made_date}, which was made payable to {to_client} was returned by your bank, {bank_name}.
+Unless full payment of the check is received by cash within {wait_period} days after the date this demand letter was mailed, together with ${late_fee} in bank fees, we will file a small claims court claim against you.
+You may wish to contact a lawyer to discuss your legal rights and responsibilities.
+Sincerely,
+Check Hunters
+"""
 
 class Client(models.Model):
     """
@@ -13,6 +37,9 @@ class Client(models.Model):
     late_fee = models.DecimalField(max_digits=15, decimal_places=2, blank=True, default=25)
     address = models.CharField(max_length=200, blank=True, null=True)
     phone_num = models.CharField(max_length=20, blank=True, null=True)
+    letter_1_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE)
+    letter_2_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE)
+    letter_3_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE)
 
     def __str__(self):
         return self.name
@@ -25,7 +52,7 @@ class Bank(models.Model):
     """
     Bank model. this makes the bank table and represents the routing number of a checking account that owes a client company money.
     """
-    routing_n = models.CharField(max_length=50, unique=True)
+    routing_n = models.CharField(max_length=50, unique=True, validators=[validate_num])
     name = models.CharField(max_length=500, default="bank")
     address = models.CharField(max_length=200, blank=True, null=True)
     phone_num = models.CharField(max_length=20, blank=True, null=True)
@@ -61,7 +88,7 @@ class Account(models.Model):
     zip_addr = models.CharField(max_length=200, default='')
 
     routing_num = models.ForeignKey(Bank, on_delete=models.SET(None), null=True)
-    account_num = models.CharField(max_length=50)
+    account_num = models.CharField(max_length=50, validators=[validate_num])
     phone_num = models.CharField(max_length=20, null=True)
 
     class Meta:
@@ -79,5 +106,3 @@ class Account(models.Model):
             base =  self.routing_num.routing_n
         return base + ':' + self.account_num
 
-def validate_positive(num):
-    return num >= 0

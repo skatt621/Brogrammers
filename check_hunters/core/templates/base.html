@@ -38,6 +38,9 @@
               <a class="nav-link" href="{% url 'checks:list' %}">Checks</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{% url 'checks:print_letters' %}">Print Letters</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'reports:general_report' %}">Reports</a>
             </li>
             {% if user.is_authenticated %}

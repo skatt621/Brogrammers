@@ -55,10 +55,14 @@ class PrintLettersView(LoginRequiredMixin, FormView):
         # get all the data needed to make the letters
         letters_data = GetLettersData(request.user)
         # get summary data to give the user an idea of what output to exepect (and for debugging)
-        letter_count = len(letters_data['first_letters']) + len(letters_data['second_letters']) + len(letters_data['third_letters'])
-        messages.success(request, 'Would have printed ' + str(letter_count) + ' letters')
+        letter_1_count = len(letters_data['first_letters'])
+        letter_2_count = len(letters_data['second_letters'])
+        letter_3_count = len(letters_data['third_letters'])
+        letter_count = letter_1_count + letter_2_count + letter_3_count
+        # messages.success(request, 'Would have printed ' + str(letter_count) + ' letters')
         
-        if(letters_data != 0):
+        if letter_count != 0:
+            messages.success(request, f"Printing {letter_1_count} 1st letters, {letter_2_count} 2nd letters, & {letter_3_count} 3rd letters")
             # make and print the letters
             success_printing_letters, response = PopulateTemplate(letters_data)
 
