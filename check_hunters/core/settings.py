@@ -131,9 +131,13 @@ USE_TZ = True
 # NOTICE: STATICFILES_DIRS is where the static files are found
 # STATIC_ROOT is where collect_static puts the files
 # STATIC_URL is for the template files I believe
-STATICFILES_DIRS = [
-    os.path.dirname((os.path.abspath(__file__))) + "/static/",
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
 STATIC_URL = '/static/'
 
 GOOGLE_API_KEY = 'AIzaSyCrRa4ZciCAw_rOYHYJPe-2t4wn2bx2ULM'
