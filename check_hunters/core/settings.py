@@ -21,7 +21,9 @@ SECRET_KEY = 'x1#!3lss^q-@w7cu9^$djn-e=&^nyrg1do25e%@)_b#8s@i4)$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'thecheckhunters.pythonanywhere.com',
+]
 
 
 # Application definition
