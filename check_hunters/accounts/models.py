@@ -12,10 +12,6 @@ def validate_num(num_str):
     return num_str.isdigit()
     
 LETTER_TEMPLATE = """
-{recipient_name}
-{st_addr}
-{city}, {state} {zip}
-
 {date}
 
 Dear {recipient_name}:

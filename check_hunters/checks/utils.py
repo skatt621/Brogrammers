@@ -10,9 +10,6 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 MAX_CHARS_FIT = 90
 
 LETTER_TEMPLATE = """
-{recipient_name}
-{st_addr}
-{city}, {state} {zip}
 
 {date}
 
@@ -57,8 +54,15 @@ def PopulateTemplate(letters_info: dict) -> bool:
         for letter_data in letters:
             rendered = letter_data['template'].format(**letter_data)
             line_x = 50
-            line_y = height - 50
+            line_y = height - 100
+
+            # draw address on pdf canvas
+            for line in [letter_data['recipient_name'], letter_data['st_addr'], "{city}, {state} {zip}".format(**letter_data)]:
+                p.drawString(line_x, line_y, line)
+                line_y -= 20
+
             # draw letter on pdf canvas
+            line_y = height - (height / 3)
             for line in rendered.splitlines(rendered.count('\n')):
                 line = line.replace('\n', '')
                 # output wrapped line.
@@ -114,7 +118,7 @@ def ExtractCheckInfo(check: object, letter_num=1) -> dict:
     letter = LETTER_TEMPLATE
     if letter_num == 1:
         letter = check.to_client.letter_1_template
-        check.letter_1_sent = True
+        # check.letter_1_sent = True        TODO uncomment
     if letter_num == 2:
         letter = check.to_client.letter_2_template
         check.letter_2_sent = True
