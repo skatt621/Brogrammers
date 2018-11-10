@@ -24,14 +24,12 @@ function donutChart() {
         padAngle, // effectively dictates the gap between slices
         floatFormat = d3.format('.4r'),
         cornerRadius, // sets how rounded the corners are on each slice
-        percentFormat = d3.format(',.2%');
+        percentFormat = d3.format('.2');
 
     function chart(selection){
         selection.each(function(data) {
             // generate chart
 
-            // ===========================================================================================
-            // Set up constructors for making donut. See https://github.com/d3/d3-shape/blob/master/README.md
             var radius = Math.min(width, height) / 2;
 
             // creates a new pie generator
@@ -77,10 +75,8 @@ function donutChart() {
               .enter().append('path')
                 .attr('fill', function(d) { return colour(d.data[category]); })
                 .attr('d', arc);
-            // ===========================================================================================
 
-            // ===========================================================================================
-            // add text labels
+
             var label = svg.select('.labelName').selectAll('text')
                 .data(pie)
               .enter().append('text')
@@ -103,9 +99,8 @@ function donutChart() {
                     // if slice centre is on the left, anchor text to start, otherwise anchor to end
                     return (midAngle(d)) < Math.PI ? 'start' : 'end';
                 });
-            // ===========================================================================================
 
-            // ===========================================================================================
+
             // add lines connecting labels to slice. A polyline creates straight lines connecting several points
             var polyline = svg.select('.lines')
                 .selectAll('polyline')
@@ -118,15 +113,11 @@ function donutChart() {
                     pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
                     return [arc.centroid(d), outerArc.centroid(d), pos]
                 });
-            // ===========================================================================================
 
-            // ===========================================================================================
+
             // add tooltip to mouse events on slices and labels
             d3.selectAll('.labelName text, .slices path').call(toolTip);
-            // ===========================================================================================
 
-            // ===========================================================================================
-            // Functions
 
             // calculates the angle for the middle of a slice
             function midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; }
@@ -179,7 +170,7 @@ function donutChart() {
 
                 return tip;
             }
-            // ===========================================================================================
+
 
         });
     }
