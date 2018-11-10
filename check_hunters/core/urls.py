@@ -23,6 +23,7 @@ from django.http import HttpResponse
 import datetime
 from django.core.management import execute_from_command_line
 import subprocess
+from accounts.views import ClientUpdateView
 
 def current_datetime(request):
     from django.template import Template, Context
@@ -76,5 +77,6 @@ urlpatterns = [
     re_path(r'checks/', include('checks.urls')),
     re_path(r'utests', current_datetime),
     re_path(r'reports/', include('reports.urls')),
+    re_path(r'company_configurations/(?P<pk>\d+)/$', ClientUpdateView.as_view(), name='client_update'),
     #re_path('^searchableselect/', include('searchableselect.urls')),
 ]
