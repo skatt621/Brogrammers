@@ -77,6 +77,8 @@ docs/_build/
 # PyBuilder
 target/
 
+# Local Database
+db.sqlite3
 
 ### Django ###
 *.log
