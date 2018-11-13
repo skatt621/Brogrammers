@@ -69,13 +69,47 @@ def current_datetime(request):
     # html = html1 + html2 + html3
     return HttpResponse(html)
 
+def resetti(request):
+    from accounts.models import Client
+    from accounts.models import Account
+    from accounts.models import Bank
+    from accounts.models import Bank
+    from django.template import Template, Context
+
+    Client.objects.all().delete()
+    Account.objects.all().delete()
+    # Bank.objects.all().delete()
+
+    resultdbr = subprocess.run(['python', 'manage.py', 'populate_db'], stdout=subprocess.PIPE)
+    stringdbr = ''.join(resultdbr.stdout.decode('utf-8'))
+
+    # resultdbr = ""
+    # stringdbr = ""
+
+    page = f""""
+    {{% extends "base.html" %}}
+    {{% load static %}}
+    {{% block stylesheets %}}
+    <link rel="stylesheet" href="{{% static 'css/home.css' %}}"/>
+    {{% endblock %}}
+    {{% block content %}}
+    <u1>
+    <li>{stringdbr}</li>
+    </u1>
+    {{% endblock content %}}
+    """
+    t = Template(page)
+    html = t.render(Context())
+    return HttpResponse(html)
+
 urlpatterns = [
     re_path(r'^$', login_required(TemplateView.as_view(template_name='home.html')), name='home'),
     re_path(r'accounts/', include('django.contrib.auth.urls')),
     re_path(r'admin/', admin.site.urls),
     re_path(r'check_accounts/', include('accounts.urls')),
     re_path(r'checks/', include('checks.urls')),
-    re_path(r'utests', current_datetime),
+    re_path(r'utests/', current_datetime),
+    re_path(r'resetdb/', resetti),
     re_path(r'reports/', include('reports.urls')),
     re_path(r'company_configurations/(?P<pk>\d+)/$', ClientUpdateView.as_view(), name='client_update'),
     #re_path('^searchableselect/', include('searchableselect.urls')),
