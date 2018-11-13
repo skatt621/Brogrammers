@@ -119,9 +119,10 @@ class Command(BaseCommand):
         # each client has a user associated with them
         # each account has a different bank because that's easiest
         # each client has a user that is associated with them
+        
         for i in range(0,5):
             # checkhunter employee
-            check_hunter_employee = Objects.update_or_create(username=f"Employee{i}User")
+            check_hunter_employee = User.objects.update_or_create(username=f"Employee{i}User")
             client, new = Client.objects.update_or_create(**CLIENT_DETS[i])
             # this creates a user, but you have to set the password in admin, can't script it
             client_user, new = User.objects.update_or_create(username=f"Client{i}User", client=client)
