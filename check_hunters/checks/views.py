@@ -5,20 +5,19 @@ from django_tables2 import RequestConfig
 from django.urls import reverse_lazy
 from datetime import datetime
 from django.contrib import messages
-
+from django.template import Template, Context
+import subprocess
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.urls import reverse
 
+from accounts.models import *    
 from .tables import ChecksTable
 from .models import Check, CheckFilter
 from .forms import CheckCreateForm, CheckMarkPaidForm, PrintLettersForm
 from .utils import *
 
-# check views
-
-
+# CHECK VIEWS
 class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
     # redirect_field_name = 'checks:list'
     table_class = ChecksTable
@@ -75,3 +74,64 @@ class PrintLettersView(LoginRequiredMixin, FormView):
             return response
         else:
             return super(PrintLettersView, self).post(request, *args, **kwargs)
+
+
+# TESTING UTILS VIEWS
+
+def reset_database(request):
+    """
+    function view that deletes all clients & accounts
+    and runs the populate_db script to restore the db to test state
+    """
+    Client.objects.all().delete()
+    Account.objects.all().delete()
+
+    resultdbr = subprocess.run(['python', 'manage.py', 'populate_db'], stdout=subprocess.PIPE)
+    stringdbr = ''.join(resultdbr.stdout.decode('utf-8'))
+
+    page = f""""
+    {{% extends "base.html" %}}
+    {{% load static %}}
+    {{% block stylesheets %}}
+    <link rel="stylesheet" href="{{% static 'css/home.css' %}}"/>
+    {{% endblock %}}
+    {{% block content %}}
+    <u1>
+    <li>{stringdbr}</li>
+    </u1>
+    {{% endblock content %}}
+    """
+    t = Template(page)
+    html = t.render(Context())
+    return HttpResponse(html)
+
+def current_datetime(request):
+    from django.template import Template, Context
+
+    resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
+    stringacc = ''.join(resultacc.stderr.decode('utf-8'))
+    index = stringacc.find("Ran")
+    stringacc = stringacc[index:]
+
+    resultchck = subprocess.run(['python', 'manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
+    stringchck = ''.join(resultchck.stderr.decode('utf-8'))
+    index = stringchck.find("Ran")
+    stringchck = stringchck[index:]
+
+    page = f""""
+    {{% extends "base.html" %}}
+    {{% load static %}}
+    {{% block stylesheets %}}
+    <link rel="stylesheet" href="{{% static 'css/home.css' %}}"/>
+    {{% endblock %}}
+    {{% block content %}}
+    <h1>Unit Test Summaries</h1>
+    <ul>
+    <li>Client, Account, and Bank Tests: </br> {stringacc.replace('.', '').replace('-', '')}</li>
+    <li>Check Tests: </br> {stringchck.replace('.', '').replace('-', '')}</li>
+    </ul>
+    {{% endblock content %}}
+    """
+    t = Template(page)
+    html = t.render(Context())
+    return HttpResponse(html)
