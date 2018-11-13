@@ -21,7 +21,9 @@ SECRET_KEY = 'x1#!3lss^q-@w7cu9^$djn-e=&^nyrg1do25e%@)_b#8s@i4)$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'thecheckhunters.pythonanywhere.com',
+]
 
 
 # Application definition
@@ -131,9 +133,13 @@ USE_TZ = True
 # NOTICE: STATICFILES_DIRS is where the static files are found
 # STATIC_ROOT is where collect_static puts the files
 # STATIC_URL is for the template files I believe
-STATICFILES_DIRS = [
-    os.path.dirname((os.path.abspath(__file__))) + "/static/",
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
 STATIC_URL = '/static/'
 
 GOOGLE_API_KEY = 'AIzaSyCrRa4ZciCAw_rOYHYJPe-2t4wn2bx2ULM'
