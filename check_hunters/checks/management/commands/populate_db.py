@@ -121,10 +121,17 @@ class Command(BaseCommand):
         # each client has a user that is associated with them
         for i in range(0,5):
             # checkhunter employee
-            check_hunter_employee = Objects.update_or_create(username=f"Employee{i}User")
+            # if Client.objects.filter(username = f"Employee{i}User").exists:
+            #     check_hunter_employee = User.objects.update_or_create(username=f"Employee{i}User")
+    
+            if not User.objects.filter(username=f"Employee{i}User").exists():
+                check_hunter_employee = User.objects.update_or_create(username=f"Employee{i}User")
+
             client, new = Client.objects.update_or_create(**CLIENT_DETS[i])
             # this creates a user, but you have to set the password in admin, can't script it
-            client_user, new = User.objects.update_or_create(username=f"Client{i}User", client=client)
+            if not User.objects.filter(username=f"Client{i}User").exists():
+                client_user, new = User.objects.update_or_create(username=f"Client{i}User", client=client)
+                
             bank, new = Bank.objects.update_or_create(**BANK_DETS[i])
             account_dets = ACCOUNT_DETS[i]
             account_dets['routing_num'] = bank
