@@ -22,46 +22,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 import datetime
 from django.core.management import execute_from_command_line
-import subprocess
+from accounts.views import ClientUpdateView
+from checks.views import reset_database, current_datetime
 
-def current_datetime(request):
-    from django.template import Template, Context
-
-    resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
-    stringacc = ''.join(resultacc.stderr.decode('utf-8'))
-    resultchck = subprocess.run(['python', 'manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
-    stringchck = ''.join(resultchck.stderr.decode('utf-8'))
-
-    # bigstringacc = "Client, Account, and Bank tests:" + stringacc
-    # bigstringchck = "Check tests:\n" + stringchck
-    # bigstringlett = "Letter tests:\n" + stringlett
-    # string = bigstringacc + bigstringchck + bigstringlett
-
-    page = f""""
-    {{% extends "base.html" %}}
-    {{% load static %}}
-    {{% block stylesheets %}}
-    <link rel="stylesheet" href="{{% static 'css/home.css' %}}"/>
-    {{% endblock %}}
-    {{% block content %}}
-    <h1>Unit Test Summaries</h1>
-    <ul>
-    <li>Client, Account, and Bank Tests: </br> {stringacc.replace('.', '').replace('-', '')}</li>
-    <li>CheckTests: </br> {stringchck.replace('.', '').replace('-', '')}</li>
-    </ul>
-    {{% endblock content %}}
-    """
-    t = Template(page)
-    html = t.render(Context())
-    return HttpResponse(html)
-
-    # now = datetime.datetime.now()
-    # html = "<html><body>It is now %s.</body></html>" % now
-    # html1 = "<html><h1>%s</h1><br><br><br><br><br>" % bigstringacc
-    # html2 = "<h1>%s</h1><br><br><br><br><br>" % bigstringchck
-    # html3 = "<h1>%s</h1></html><br><br><br><br><br>" % bigstringlett
-    # html = html1 + html2 + html3
-    return HttpResponse(html)
 
 urlpatterns = [
     re_path(r'^$', login_required(TemplateView.as_view(template_name='home.html')), name='home'),
@@ -69,7 +32,8 @@ urlpatterns = [
     re_path(r'admin/', admin.site.urls),
     re_path(r'check_accounts/', include('accounts.urls')),
     re_path(r'checks/', include('checks.urls')),
-    re_path(r'utests', current_datetime),
+    re_path(r'utests/', current_datetime),
+    re_path(r'resetdb/', reset_database),
     re_path(r'reports/', include('reports.urls')),
-    #re_path('^searchableselect/', include('searchableselect.urls')),
+    re_path(r'company_configurations/(?P<pk>\d+)/$', ClientUpdateView.as_view(), name='client_update'),
 ]

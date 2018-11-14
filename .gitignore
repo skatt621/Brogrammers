@@ -91,3 +91,5 @@ local_settings.py
 .vscode
 db.sqlite3
 brogrammers_env/
+check_hunters/static
+
