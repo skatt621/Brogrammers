@@ -33,7 +33,6 @@
               {{ form|crispy }}
               <button class="btn btn-primary" type="submit" name="Submit" onclick="submitForm()">Submit</button>
             </form>
-
         </div>
       </div>
   </div>
@@ -42,10 +41,9 @@
       var requesturl = "";
       var queryString = "";
       var numQueryStringParameters = 0;
-
       // handles a form submit, iterating over the elements starting at box 1 until a non-input box is found and creating
       // a query string from it
-      function submitForm() {
+      /* function submitForm() {
         var i;
         for(i = 1; i < document.getElementById("form").elements.length; ++i){
           if (typeof document.getElementById("form").elements[i] != 'undefined' && document.getElementById("form").elements[i].type !== 'submit') {
@@ -71,7 +69,7 @@
         document.getElementById("graph").innerHTML = "";
         submitForm();
         createDonutChart();
-     });
+     });*/
 
     // create the donut template
     var donut = donutChart()

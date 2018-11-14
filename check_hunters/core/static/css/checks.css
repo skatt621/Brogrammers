@@ -1,8 +1,17 @@
 body {
   text-align: center;
-  margin: 0 auto;
 }
 
 form {
   display: inline-block;
+}
+
+p, input {
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+th {
+  padding: 10px;
 }
