@@ -118,7 +118,7 @@ def current_datetime(request):
     # resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
     # stringacc = ''.join(resultacc.stderr.decode('utf-8'))
     ##
-    resultacc = subprocess.run(['python', '\home\\thecheckhunters\Brogrammers\check_hunters\manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
+    resultacc = subprocess.run(['python', '\home\\thecheckhunters\Brogrammers\check_hunters\manage.py', 'test', '\home\\thecheckhunters\Brogrammers\check_hunters\\accounts'], stderr=subprocess.PIPE)
     stringacc = ''.join(resultacc.stderr.decode('utf-8'))
     ##
     index = stringacc.find("Ran")
