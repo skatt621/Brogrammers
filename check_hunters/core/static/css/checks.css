@@ -1,8 +1,25 @@
 body {
-  text-align: center;
   margin: 0 auto;
 }
 
 form {
   display: inline-block;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+input[type="submit"]{
+  position: absolute;
+  bottom: -20px;
+  right: 0px;
+}
+
+
+table {
+  width: 100%;
+}
+
+form p {
+  margin: 0px 20px;
+  width: 200px;
 }

@@ -2,7 +2,9 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
+from django_filters.views import FilterView
 from accounts.models import Account, Client
+from accounts.filters import AccountFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
 from django.forms.models import modelform_factory
@@ -16,8 +18,10 @@ class ModelFormWidgetMixin(object):
 class AccountListView(LoginRequiredMixin, ListView):
     """view for having a list of accounts"""
     model = Account
+    # filterset_class = AccountFilter
     paginate_by = 100
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2',  'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num', 'render_edit_link']
+    # template_name = "accounts/account_list.html"
 
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
@@ -33,6 +37,15 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('accounts:list')
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2', 'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num']
 
+
+def validate_company_employee(request, client_pk):
+    # checks if user can view page. raises a permission error if not
+    client = request.user.client
+    if client and client.pk != client_pk:
+        raise PermissionDenied()
+
+
+
 class ClientUpdateView(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
     """view where a client user can change a client company's configurations"""
     model = Client
@@ -45,11 +58,9 @@ class ClientUpdateView(LoginRequiredMixin, ModelFormWidgetMixin, UpdateView):
     }
 
     def get(self, request, *args, **kwargs):
-        client = request.user.client
-        if client and client.pk != kwargs['pk']:
-            raise PermissionDenied()
+        validate_company_employee(request, int(kwargs['pk']))
         return super(ClientUpdateView, self).get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        # todo validate user
+        validate_company_employee(request, int(kwargs['pk']))
         return super(ClientUpdateView, self).post(request, *args, **kwargs)

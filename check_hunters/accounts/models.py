@@ -1,8 +1,8 @@
+import django_filters
 from django.db import models
 from django.urls import reverse
 from address.models import AddressField
 from datetime import timedelta
-# from checks.models import validate_num, validate_positive
 
 
 def validate_positive(num):
@@ -101,4 +101,3 @@ class Account(models.Model):
         if self.routing_num:
             base =  self.routing_num.routing_n
         return base + ':' + self.account_num
-
