@@ -18,12 +18,9 @@ class ModelFormWidgetMixin(object):
 class AccountListView(LoginRequiredMixin, ListView):
     """view for having a list of accounts"""
     model = Account
-    # filterset_class = AccountFilter
     paginate_by = 100
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2',  'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num', 'render_edit_link']
-    # template_name = "accounts/account_list.html"
-
-
+    
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     """view for updating an account's information"""
     model = Account
