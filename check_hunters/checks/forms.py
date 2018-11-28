@@ -27,7 +27,7 @@ class RelatedFieldWidgetCanAdd(widgets.Select):   # TODO SearchableSelect
         self.related_url = reverse(self.related_url)
         output = [super(RelatedFieldWidgetCanAdd, self).render(name, value, *args, **kwargs)]
         img = '<img src="{0}img/add_icon.png" class="icon" id="add_icon" width="10" height="10" alt="{1}"/></a>'.format(settings.STATIC_URL, "Add Another")
-        link = '<a href="{0}" class="add-another" id="add_id_{1}" onclick="return showAddAnotherPopup(this);">'.format(self.related_url, name)
+        link = '<a href="{0}" target="_blank" class="add-another" id="add_id_{1}" onclick="return showAddAnotherPopup(this);">'.format(self.related_url, name)
         output.append(link)
         output.append(img)                                                                                                                               
         return mark_safe(u''.join(output))
