@@ -1,5 +1,9 @@
 body {
+<<<<<<< HEAD
   margin: 0 auto;
+=======
+  text-align: center;
+>>>>>>> 60935df7225065d0df8ae642fd03e156a0b25768
 }
 
 form {
@@ -8,6 +12,7 @@ form {
   margin-bottom: 50px;
 }
 
+<<<<<<< HEAD
 input[type="submit"]{
   position: absolute;
   bottom: -20px;
@@ -23,3 +28,14 @@ form p {
   margin: 0px 20px;
   width: 200px;
 }
+=======
+p, input {
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+th {
+  padding: 10px;
+}
+>>>>>>> 60935df7225065d0df8ae642fd03e156a0b25768

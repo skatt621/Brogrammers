@@ -11,6 +11,9 @@ from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime, timedelta
+from checks.management.commands.populate_db import Command
+from django.template import Template, Context
+
 
 from accounts.models import *    
 from .tables import ChecksTable
@@ -96,8 +99,12 @@ def reset_database(request):
     Client.objects.all().delete()
     Account.objects.all().delete()
 
-    resultdbr = subprocess.run(['python', 'manage.py', 'populate_db'], stdout=subprocess.PIPE)
-    stringdbr = ''.join(resultdbr.stdout.decode('utf-8'))
+    # resultdbr = subprocess.run(['python', 'manage.py', 'populate_db'], stdout=subprocess.PIPE)
+    # stringdbr = ''.join(resultdbr.stdout.decode('utf-8'))
+
+    ##
+    Command().handle()
+    ##
 
     page = f""""
     {{% extends "base.html" %}}
@@ -107,7 +114,7 @@ def reset_database(request):
     {{% endblock %}}
     {{% block content %}}
     <u1>
-    <li>{stringdbr}</li>
+    <li>Database reset successfully</li>
     </u1>
     {{% endblock content %}}
     """
@@ -116,15 +123,22 @@ def reset_database(request):
     return HttpResponse(html)
 
 def current_datetime(request):
-    from django.template import Template, Context
 
-    resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
+    # resultacc = subprocess.run(['python', 'manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
+    # stringacc = ''.join(resultacc.stderr.decode('utf-8'))
+    ##
+    resultacc = subprocess.run(['python', 'check_hunters\manage.py', 'test', 'accounts'], stderr=subprocess.PIPE)
     stringacc = ''.join(resultacc.stderr.decode('utf-8'))
+    ##
     index = stringacc.find("Ran")
     stringacc = stringacc[index:]
 
-    resultchck = subprocess.run(['python', 'manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
+    # resultchck = subprocess.run(['python', 'manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
+    # stringchck = ''.join(resultchck.stderr.decode('utf-8'))
+    ##
+    resultchck = subprocess.run(['python', 'check_hunters\manage.py', 'test', 'checks'], stderr=subprocess.PIPE)
     stringchck = ''.join(resultchck.stderr.decode('utf-8'))
+    ##
     index = stringchck.find("Ran")
     stringchck = stringchck[index:]
 

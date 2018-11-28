@@ -17,6 +17,8 @@ body, html {
 
 footer {
   text-align: center;
+  bottom: 10px;
+  width: 100%;
 }
 
 ul.errorlist {

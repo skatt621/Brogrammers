@@ -1,0 +1,16 @@
+body {
+  text-align: center;
+}
+
+
+form {
+  display: inline-block;
+}
+
+input {
+  margin: 0 auto;
+}
+
+.btn {
+  margin: 10px;
+}

@@ -77,6 +77,8 @@ docs/_build/
 # PyBuilder
 target/
 
+# Local Database
+db.sqlite3
 
 ### Django ###
 *.log
@@ -89,3 +91,5 @@ local_settings.py
 .vscode
 db.sqlite3
 brogrammers_env/
+check_hunters/static
+
