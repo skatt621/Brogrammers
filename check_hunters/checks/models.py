@@ -2,12 +2,16 @@ from django.db import models
 from django.conf import settings
 from accounts.models import Account, Client
 from datetime import datetime
+from django.core.exceptions import ValidationError
+
 
 def validate_positive(num):
-    return num >= 0
+    if not num >= 0:
+        raise ValidationError(f"value can't be negative ({num})")
 
 def validate_num(num_str):
-    return num_str.isdigit()
+    if not num_str.isdigit():
+        raise ValidationError(f"value must be a number ({num_str})")
 
 
 class Check(models.Model):

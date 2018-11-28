@@ -18,3 +18,9 @@ body, html {
 footer {
   text-align: center;
 }
+
+ul.errorlist {
+  background: pink;
+  opacity: .8;
+  border: 1px solid red;
+}
