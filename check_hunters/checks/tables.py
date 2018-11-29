@@ -3,10 +3,10 @@ from django_tables2.utils import A
 from .models import Check
 
 class ChecksTable(tables.Table):
-    paid = tables.LinkColumn('checks:update', args=[A('pk')])
-    
+    check_num = tables.LinkColumn('checks:update', args=[A('pk')])
+    paid = tables.BooleanColumn()
     class Meta:
         model = Check
-        fields = ('to_client', 'from_account', 'amount', 'made_date', 'check_num', 'paid')
+        fields = ('check_num', 'from_account', 'to_client', 'amount', 'made_date', 'paid')
         attrs = {"class": "table-striped table-bordered"}
         empty_text = "No Checks matching the search criteria"

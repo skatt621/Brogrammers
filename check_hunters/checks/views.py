@@ -10,14 +10,15 @@ import subprocess
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-##
+from datetime import datetime, timedelta
 from checks.management.commands.populate_db import Command
 from django.template import Template, Context
-##
+
 
 from accounts.models import *    
 from .tables import ChecksTable
-from .models import Check, CheckFilter
+from .models import Check 
+from .filters import CheckFilter
 from .forms import CheckCreateForm, CheckMarkPaidForm, PrintLettersForm
 from .utils import *
 
@@ -30,6 +31,14 @@ class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
     paginate_by = 100
     fields = ['to_client', 'from_account', 'amount', 'made_date', 'check_num', 'paid']
 
+        
+    def get_filterset_kwargs(self, filterset_class):
+        kwargs = super(CheckListView, self).get_filterset_kwargs(filterset_class)
+        if kwargs["data"] is None:
+            kwargs["data"] = {
+                'not_paid': '2'
+            }
+        return kwargs
 
 class CheckUpdateView(LoginRequiredMixin, UpdateView):
     # redirect_field_name = 'checks:update'
@@ -62,7 +71,6 @@ class PrintLettersView(LoginRequiredMixin, FormView):
         letter_2_count = len(letters_data['second_letters'])
         letter_3_count = len(letters_data['third_letters'])
         letter_count = letter_1_count + letter_2_count + letter_3_count
-        # messages.success(request, 'Would have printed ' + str(letter_count) + ' letters')
         
         if letter_count != 0:
             messages.success(request, f"Printing {letter_1_count} 1st letters, {letter_2_count} 2nd letters, & {letter_3_count} 3rd letters")
@@ -77,6 +85,7 @@ class PrintLettersView(LoginRequiredMixin, FormView):
             # return super(PrintLettersView, self).post(request, *args, **kwargs)
             return response
         else:
+            messages.success(request, "There are no letters that need to be printed today.")
             return super(PrintLettersView, self).post(request, *args, **kwargs)
 
 

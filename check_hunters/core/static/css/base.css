@@ -20,3 +20,9 @@ footer {
   bottom: 10px;
   width: 100%;
 }
+
+ul.errorlist {
+  background: pink;
+  opacity: .8;
+  border: 1px solid red;
+}

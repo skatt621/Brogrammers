@@ -1,15 +1,20 @@
+import django_filters
+import re
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from address.models import AddressField
 from datetime import timedelta
-# from checks.models import validate_num, validate_positive
 
 
 def validate_positive(num):
-    return num >= 0
+    if not num >= 0:
+        raise ValidationError(f"value can't be negative ({num})")
 
 def validate_num(num_str):
-    return num_str.isdigit()
+    if not num_str.isdigit():
+        raise ValidationError(f"value must be a number ({num_str})")
+
     
 LETTER_TEMPLATE = """
 {date}
@@ -23,6 +28,31 @@ Sincerely,
 Check Hunters
 """
 
+VALID_TAGS = [
+    'template',
+    'recipient_name',
+    'st_addr',
+    'city',
+    'state',
+    'zip',
+    'date',
+    'to_client',
+    'check_num',
+    'made_date',
+    'bank_name',
+    'check_amt',
+    'late_fee',
+    'wait_period'
+]
+
+REGEX = re.compile(r'[^{]*{([^}]*)}')
+
+def validate_template(template_str):
+    keys = REGEX.findall(template_str)
+    for key in keys:
+        if key not in VALID_TAGS:
+            raise ValidationError(f"Template tag '{key}' not a valid tag. Options are {VALID_TAGS}")
+
 class Client(models.Model):
     """
     Client model. this makes the client table and represents a Client company using the Check Hunter Services
@@ -33,9 +63,9 @@ class Client(models.Model):
     late_fee = models.DecimalField(max_digits=15, decimal_places=2, blank=True, default=25)
     address = models.CharField(max_length=200, blank=True, null=True)
     phone_num = models.CharField(max_length=20, blank=True, null=True)
-    letter_1_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE)
-    letter_2_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE)
-    letter_3_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE)
+    letter_1_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE, validators=[validate_template])
+    letter_2_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE, validators=[validate_template])
+    letter_3_template = models.CharField(max_length=5000, blank=True, default=LETTER_TEMPLATE, validators=[validate_template])
 
     def __str__(self):
         return self.name
@@ -101,4 +131,3 @@ class Account(models.Model):
         if self.routing_num:
             base =  self.routing_num.routing_n
         return base + ':' + self.account_num
-
