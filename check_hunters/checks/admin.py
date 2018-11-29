@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import *
-
-# creates admin pages for checks
+from django.contrib.admin.models import LogEntry, ADDITION
 
 @admin.register(Check)
 class CheckAdmin(admin.ModelAdmin):

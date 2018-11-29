@@ -29,7 +29,7 @@ class RelatedFieldWidgetCanAdd(widgets.Select):   # TODO SearchableSelect
         img = '<img src="{0}img/add_icon.png" class="icon" id="add_icon" width="10" height="10" alt="{1}"/></a>'.format(settings.STATIC_URL, "Add Another")
         link = '<a href="{0}" target="_blank" class="add-another" id="add_id_{1}" onclick="return showAddAnotherPopup(this);">'.format(self.related_url, name)
         output.append(link)
-        output.append(img)                                                                                                                               
+        output.append(img)
         return mark_safe(u''.join(output))
 
 
@@ -42,6 +42,8 @@ class CheckCreateForm(ModelForm):
             'from_account': RelatedFieldWidgetCanAdd(Account, related_url="accounts:create"), # , search_field='name', model="accounts.Account"),
             'made_date':widgets.SelectDateWidget(),
         }
+        
+
 
 
 class CheckMarkPaidForm(ModelForm):
@@ -60,7 +62,7 @@ class CheckMarkPaidForm(ModelForm):
                 return valid
             # TODO if amountpaid != amount, make sure user is supervisor or admin
             return valid
-        
+
 class PrintLettersForm(Form):
     """form that starts batch print process when posted to"""
     pass

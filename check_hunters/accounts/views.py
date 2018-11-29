@@ -9,7 +9,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
 from django.forms.models import modelform_factory
 from django.core.exceptions import PermissionDenied
+import logging
+from datetime import datetime
 
+logger = logging.getLogger(__name__)
 
 class ModelFormWidgetMixin(object):
     def get_form_class(self):
@@ -20,13 +23,17 @@ class AccountListView(LoginRequiredMixin, ListView):
     model = Account
     paginate_by = 100
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2',  'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num', 'render_edit_link']
-    
+
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     """view for updating an account's information"""
     model = Account
     success_url = reverse_lazy('accounts:update')
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2', 'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num']
 
+    def form_valid(self, form):
+        infoString = "{} {} Updated Account with Primary Check Holder {} {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.request.user, form.cleaned_data["first_name1"], form.cleaned_data["last_name1"])
+        logger.info(infoString)
+        return super().form_valid(form)
 
 class AccountCreateView(LoginRequiredMixin, CreateView):
     """view for creating an account"""
@@ -34,6 +41,10 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('accounts:list')
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2', 'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num']
 
+    def form_valid(self, form):
+        infoString = "{} {} Created a New Account with Primary Check Holder {} {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.request.user, form.cleaned_data["first_name1"], form.cleaned_data["last_name1"])
+        logger.info(infoString)
+        return super().form_valid(form)
 
 def validate_company_employee(request, client_pk):
     # checks if user can view page. raises a permission error if not
