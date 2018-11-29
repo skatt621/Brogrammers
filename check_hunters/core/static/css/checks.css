@@ -1,9 +1,5 @@
 body {
-<<<<<<< HEAD
-  margin: 0 auto;
-=======
   text-align: center;
->>>>>>> 60935df7225065d0df8ae642fd03e156a0b25768
 }
 
 form {
@@ -12,30 +8,30 @@ form {
   margin-bottom: 50px;
 }
 
-<<<<<<< HEAD
-input[type="submit"]{
-  position: absolute;
-  bottom: -20px;
-  right: 0px;
-}
-
-
 table {
   width: 100%;
+  text-align: center;
 }
 
 form p {
   margin: 0px 20px;
   width: 200px;
 }
-=======
-p, input {
-    margin: 0 auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+.align-it {
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-th {
-  padding: 10px;
+
+@media only screen and (min-width: 410px) and (max-width: 1200px) {
+  .form {
+    display: inline;
+    margin: 0 auto;
+  }
+
+  .form > p {
+    margin-left: 25%;
+  }
 }
->>>>>>> 60935df7225065d0df8ae642fd03e156a0b25768
