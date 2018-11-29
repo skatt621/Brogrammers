@@ -5,38 +5,32 @@
 {% endblock %}
 
 {% block content %}
-<div class="check-hunters-image" style="background-image: url({% static 'img/writingcheck.jpg' %});"></div>
+    <div class="check-hunters-image" style="background-image: url({% static 'img/writingcheck.jpg' %});"></div>
 
-<div class="check-hunters-title login" >
-<div class="container">
-  <div class="row">
-    <div>
-        <h1>Log in to Check Hunters</h1>
-        {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-        {% endif %}
-
-        {% if next %}
-            {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-            please login with an account that has access.</p>
-            {% else %}
-            <p>Please login to see this page.</p>
+    <div class="container check-hunters-form">
+            <h1>Log in to Check Hunters</h1>
+            {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
             {% endif %}
-        {% endif %}
 
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-primary" type="submit" value="login">Login</button>
-            <input type="hidden" name="next" value="{{ next }}">
-        </form>
+            {% if next %}
+                {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+                {% else %}
+                <p>Please login to see this page.</p>
+                {% endif %}
+            {% endif %}
 
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-primary" type="submit" value="login">Login</button>
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
 
-  </div>
-</div>
-</div>
-</div>
+            <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+    </div>
+
 
 {% endblock %}

@@ -44,7 +44,7 @@ class Check(models.Model):
         if account.last_name2 and account.first_name2:
             name_str += f" and {account.first_name2} {account.last_name2}"
         return name_str
-        
+
     def save(self, *args, **kwargs):
         """overriding save to set date values"""
         if not self.created_date:
@@ -63,4 +63,3 @@ class Check(models.Model):
 
     def paid(self):
         return self.paid_date != None
-        
