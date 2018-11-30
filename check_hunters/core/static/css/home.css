@@ -16,6 +16,11 @@
   text-align: center;
 }
 
+.login {
+  background-color: white;
+  opacity: .8;
+}
+
 #logo {
   min-width: 225px;
 }

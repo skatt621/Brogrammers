@@ -3,7 +3,9 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from accounts.models import Account, Bank, Client
 from checks.models import Check
+import logging
 
+logger = logging.getLogger(__name__)
 
 from .forms import FilterForm
 

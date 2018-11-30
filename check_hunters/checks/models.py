@@ -1,16 +1,17 @@
 from django.db import models
 from django.conf import settings
-from django import forms
-import django_filters
 from accounts.models import Account, Client
-from django.forms import SelectDateWidget
 from datetime import datetime
+from django.core.exceptions import ValidationError
+
 
 def validate_positive(num):
-    return num >= 0
+    if not num >= 0:
+        raise ValidationError(f"value can't be negative ({num})")
 
 def validate_num(num_str):
-    return num_str.isdigit()
+    if not num_str.isdigit():
+        raise ValidationError(f"value must be a number ({num_str})")
 
 
 class Check(models.Model):
@@ -37,13 +38,16 @@ class Check(models.Model):
     letter_2_sent = models.BooleanField(null=True, blank=True, default=False)
     letter_3_sent = models.BooleanField(null=True, blank=True, default=False)
 
+    def paid(self):
+        return not self.paid_date is None
+
     def name(self):
         account = self.from_account
         name_str = f"{account.first_name1} {account.last_name1}"
         if account.last_name2 and account.first_name2:
             name_str += f" and {account.first_name2} {account.last_name2}"
         return name_str
-        
+
     def save(self, *args, **kwargs):
         """overriding save to set date values"""
         if not self.created_date:
@@ -62,16 +66,3 @@ class Check(models.Model):
 
     def paid(self):
         return self.paid_date != None
-
-
-class CheckFilter(django_filters.FilterSet):
-    """class to filter checks for reports / list views"""
-    made_date_start = django_filters.DateFilter(label='Made Out Start Date', field_name='made_date', lookup_expr='gte', widget=SelectDateWidget)
-    made_date_end = django_filters.DateFilter(label='Made Out End Date', field_name='made_date', lookup_expr='lte', widget=SelectDateWidget)
-    
-    paid_date_start = django_filters.DateFilter(label='Paid Start Date',field_name='paid_date', lookup_expr='gte', widget=SelectDateWidget)
-    paid_date_end = django_filters.DateFilter(label='Paid End Date', field_name='paid_date', lookup_expr='lte', widget=SelectDateWidget)
-
-    class Meta:
-        model = Check
-        fields = []

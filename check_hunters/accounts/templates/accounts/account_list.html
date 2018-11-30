@@ -14,14 +14,12 @@
     <a href="{% url 'accounts:create' %}">Create New Account</a>
     {% if filter %}
         <h4>Filter Accounts</h4>
-        <form action="" method="get"  class="form form-inline"  id="check_filter_form">
-          {{ filter.form.as_p }}
-            <input type="submit" />
-        </form>
+          <form action="" method="get"  class="form form-inline"  id="check_filter_form">
+              {{ filter.form.as_p }}
+              <input type="submit" />
+          </form>
       {% endif %}
     {% render_table account_list %}
-
-    </div>
   </div>
 </div>
 {% endblock %}

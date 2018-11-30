@@ -118,7 +118,7 @@ def ExtractCheckInfo(check: object, letter_num=1) -> dict:
     letter = LETTER_TEMPLATE
     if letter_num == 1:
         letter = check.to_client.letter_1_template
-        # check.letter_1_sent = True        TODO uncomment
+        check.letter_1_sent = True
     if letter_num == 2:
         letter = check.to_client.letter_2_template
         check.letter_2_sent = True
