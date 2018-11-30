@@ -52,7 +52,7 @@ class CheckUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('checks:list')
 
     def form_valid(self, form):
-        infoString = "{} {} Updated a Check to {} from Account {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.request.user, form.cleaned_data["to_client"], form.cleaned_data["from_account"])
+        infoString = "{} {} Updated Marked Check {} to {} from Account {} Paid".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.request.user, self.object.check_num, self.object.to_client, self.object.from_account)
         logger.info(infoString)
         """override form_valid to associate it with the current user that created it"""
         form.instance.created_by = self.request.user

@@ -1,19 +1,3 @@
-var donut = donutChart()
-    .width(960)
-    .height(500)
-    .cornerRadius(3) // sets how rounded the corners are on each slice
-    .padAngle(0.015) // effectively dictates the gap between slices
-    .variable('Count')
-    .category('Name');
-
-d3.json('data.json', function(error, data) {
-    if (error) throw error;
-    d3.select('.graph')
-        .datum(data) // bind data to the div
-        .call(donut); // draw chart in div
-});
-
-
 function donutChart() {
     var width,
         height,
@@ -49,25 +33,19 @@ function donutChart() {
             var outerArc = d3.arc()
                 .outerRadius(radius * 0.9)
                 .innerRadius(radius * 0.9);
-            // ===========================================================================================
 
-            // ===========================================================================================
             // append the svg object to the selection
             var svg = selection.append('svg')
                 .attr('width', width + margin.left + margin.right)
                 .attr('height', height + margin.top + margin.bottom)
               .append('g')
                 .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
-            // ===========================================================================================
 
-            // ===========================================================================================
             // g elements to keep elements within svg modular
             svg.append('g').attr('class', 'slices');
             svg.append('g').attr('class', 'labelName');
             svg.append('g').attr('class', 'lines');
-            // ===========================================================================================
 
-            // ===========================================================================================
             // add and colour the donut slices
             var path = svg.select('.slices')
                 .datum(data).selectAll('path')
