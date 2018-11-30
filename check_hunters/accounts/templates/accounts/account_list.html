@@ -9,8 +9,7 @@
 {% block content %}
 <div class="container">
   <div class="row">
-
-    <div class="col-sm-12  offset-md-1 col-md-10">
+    <div >
     <h1>Accounts</h1>
     <a href="{% url 'accounts:create' %}">Create New Account</a>
     {% if filter %}
@@ -22,6 +21,5 @@
       {% endif %}
     {% render_table account_list %}
   </div>
-</div>
 </div>
 {% endblock %}
