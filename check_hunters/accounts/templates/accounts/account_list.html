@@ -9,12 +9,19 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-sm-12  offset-md-1 col-md-10">
+    <div >
     <h1>Accounts</h1>
+    <a href="{% url 'accounts:create' %}">Create New Account</a>
+    {% if filter %}
+        <h4>Filter Accounts</h4>
+        <form action="" method="get"  class="form form-inline"  id="check_filter_form">
+          {{ filter.form.as_p }}
+            <input type="submit" />
+        </form>
+      {% endif %}
     {% render_table account_list %}
 
-    <a href="{% url 'accounts:create' %}">Create New Account</a>
+    </div>
   </div>
-</div>
 </div>
 {% endblock %}
