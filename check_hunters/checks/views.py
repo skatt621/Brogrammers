@@ -28,7 +28,6 @@ logger = logging.getLogger(__name__)
 
 # CHECK VIEWS
 class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
-    # redirect_field_name = 'checks:list'
     table_class = ChecksTable
     filterset_class = CheckFilter
     model = Check

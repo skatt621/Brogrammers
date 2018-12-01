@@ -12,6 +12,8 @@ from django.core.exceptions import PermissionDenied
 import logging
 from datetime import datetime
 from .forms import AccountCreateForm
+from .tables import AccountsTable
+from django_tables2.views import SingleTableMixin
 
 
 logger = logging.getLogger(__name__)
@@ -20,11 +22,16 @@ class ModelFormWidgetMixin(object):
     def get_form_class(self):
         return modelform_factory(self.model, fields=self.fields, widgets=self.widgets)
 
-class AccountListView(LoginRequiredMixin, ListView):
+class AccountListView(SingleTableMixin, LoginRequiredMixin, ListView):
     """view for having a list of accounts"""
     model = Account
+    table_class = AccountsTable
     paginate_by = 100
     fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2',  'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num', 'render_edit_link']
+
+    def get_context_data(self, *args, **kwargs):
+        c = super(AccountListView, self).get_context_data(*args, **kwargs)
+        return c
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     """view for updating an account's information"""
