@@ -3,7 +3,6 @@ import re
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
-from address.models import AddressField
 import datetime
 
 import logging

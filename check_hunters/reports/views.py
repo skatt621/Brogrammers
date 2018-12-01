@@ -7,13 +7,20 @@ from datetime import datetime
 
 from .forms import FilterForm
 
+def filter_by_to_client(qs, request):
+    client = request.user.client
+    if client:
+        return qs.filter(to_client=client)
+    return qs
+
 @login_required
 def general_report(request):
     return render(request, 'generalreports.html')
 
+
 @login_required
 def paid_check_data(request):
-    checks = Check.objects.all()
+    checks = filter_by_to_client(Check.objects.all(), request)
     return_data = []
 
     paid_checks = {}
@@ -38,7 +45,7 @@ def paid_check_data(request):
 
 @login_required
 def sent_letters_data(request):
-    checks = Check.objects.all()
+    checks = filter_by_to_client(Check.objects.all(), request)
 
     letter_1_sent = 0
     letter_2_sent = 0
@@ -76,8 +83,12 @@ def sent_letters_data(request):
 
 @login_required
 def num_checks_data(request):
-    checks = Check.objects.all()
-    clients = Client.objects.all()
+    checks = filter_by_to_client(Check.objects.all(), request)
+    client = request.user.client
+    if client:
+        clients = [client,]
+    else:
+        clients = Client.objects.all()
     client_count_dict = {}
     client_ids_to_names = {}
     for client in clients:

@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'address',
+    # 'address',
     'django_tables2',
     'reportlab',
     # 'django.core.context_processors.request',
