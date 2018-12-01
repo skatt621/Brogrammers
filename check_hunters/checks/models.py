@@ -41,6 +41,9 @@ class Check(models.Model):
     letter_2_sent = models.BooleanField(null=True, blank=True, default=False)
     letter_3_sent = models.BooleanField(null=True, blank=True, default=False)
 
+    def paid(self):
+        return not self.paid_date is None
+
     def name(self):
         account = self.from_account
         name_str = f"{account.first_name1} {account.last_name1}"

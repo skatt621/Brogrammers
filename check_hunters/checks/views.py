@@ -40,7 +40,7 @@ class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
         kwargs = super(CheckListView, self).get_filterset_kwargs(filterset_class)
         if kwargs["data"] is None:
             kwargs["data"] = {
-                'not_paid': '2'
+                'not_paid': '1'
             }
         return kwargs
 

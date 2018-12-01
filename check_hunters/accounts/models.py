@@ -112,6 +112,18 @@ class Bank(models.Model):
         super(Bank, self).save(*args, **kwargs)
 
 
+class StringToFK(models.ForeignKey):
+    # def to_python(self, value):
+    #     bank = Bank.objects.get_or_create(routing_num=value)
+    #     return bank
+
+    # def validate(self, value):
+    #     validate_num(value)
+    #     return True
+
+    pass
+
+
 class Account(models.Model):
     """
     Account model. this model represents a checking account of a bounced check and makes the Account table.

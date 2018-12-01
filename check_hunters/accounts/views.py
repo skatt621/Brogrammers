@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django_filters.views import FilterView
-from accounts.models import Account, Client
+from accounts.models import Account, Client, Bank
 from accounts.filters import AccountFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django import forms
@@ -11,6 +11,8 @@ from django.forms.models import modelform_factory
 from django.core.exceptions import PermissionDenied
 import logging
 from datetime import datetime
+from .forms import AccountCreateForm
+
 
 logger = logging.getLogger(__name__)
 
@@ -38,13 +40,21 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
 class AccountCreateView(LoginRequiredMixin, CreateView):
     """view for creating an account"""
     model = Account
+    form_class = AccountCreateForm
     success_url = reverse_lazy('accounts:list')
-    fields = ['first_name1', 'first_name2', 'last_name1', 'last_name2', 'street_addr', 'city_addr', 'state_addr', 'zip_addr', 'routing_num', 'account_num', 'phone_num']
-
+    
     def form_valid(self, form):
         infoString = "{} {} Created a New Account with Primary Check Holder {} {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.request.user, form.cleaned_data["first_name1"], form.cleaned_data["last_name1"])
         logger.info(infoString)
         return super().form_valid(form)
+
+
+class BankCreateView(LoginRequiredMixin, CreateView):
+    """view for creating a bank"""
+    model = Bank
+    success_url = reverse_lazy('accounts:list')
+    fields = '__all__'
+
 
 def validate_company_employee(request, client_pk):
     # checks if user can view page. raises a permission error if not
