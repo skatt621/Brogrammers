@@ -1,3 +1,7 @@
 .bar {
-  fill: steelblue;
+  fill: #004466;
+}
+
+.bar:hover {
+  fill: #0088cc;
 }

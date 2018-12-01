@@ -65,7 +65,8 @@ class CheckCreateView(LoginRequiredMixin, CreateView):
     form_class = CheckCreateForm
 
     def form_valid(self, form):
-        print(super().form_valid(form))
+        infoString = "{} {} Created Check {} to {} from Account {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.request.user, self.object.check_num, self.object.to_client, self.object.from_account)
+        logger.info(infoString)
         """override form_valid to associate it with the current user that created it"""
         form.instance.created_by = self.request.user
         return super().form_valid(form)

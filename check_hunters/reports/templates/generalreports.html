@@ -4,12 +4,14 @@
 
 {% block stylesheets %}
   <link rel="stylesheet" href="{% static 'css/piechart.css' %}"/>
-    <link rel="stylesheet" href="{% static 'css/barchart.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/barchart.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/bubblechart.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/reports.css' %}"/>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
   <script type="text/javascript" src="{% static 'js/piechart.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/barchart.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bubblechart.js' %}"></script>
 {% endblock %}
 
 {% load crispy_forms_tags %}
@@ -31,20 +33,16 @@
       </div>
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-md-1 col-md-10">
+            <h3> Number of Unpaid Checks Per Client </h3>
+            <div class="bubblechart" id="bubblechart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-10 offset-sm-1 offset-md-1 col-md-10">
             <h3> Letters Sent Today </h3>
             <div class="barchart" id="barchart"></div>
         </div>
       </div>
-
-      <!--<div class="row">
-        <div class="col-sm-10 offset-sm-1 offset-md-4 col-md-4">
-            <form id="form" method="post">
-              {% csrf_token %}
-              {{ form|crispy }}
-              <button class="btn btn-primary" type="submit" name="Submit" onclick="submitForm()">Submit</button>
-            </form>
-        </div>
-      </div>-->
   </div>
 
   <script type="text/javascript">
@@ -58,7 +56,7 @@
         .variable('Count')
         .category('Name');
 
-    // create the donut chart using the data from the query parameters
+    // create the donut chart parsing data from the backend "api"
     function createDonutChart() {
     d3.json("{% url 'reports:paid_check_data' %}", function(error, data) {
         if (error) throw error;
@@ -68,18 +66,24 @@
     });
   }
 
-  // create the bar graph
+  // create the bar graph parsing data from the backend "api"
   function createBarChart() {
     barChart("{% url 'reports:sent_letters_data' %}")
+  }
+
+  //create a bubble chart parsing data from the backend "api"
+  function createBubbleChart() {
+    bubbleChart("{% url 'reports:num_checks_data' %}")
   }
 
   // function that handles creating the charts when the window loads
   function startUp() {
     createDonutChart();
     createBarChart();
+    createBubbleChart();
   }
 
-  //initialize the donut chart when loading the page
+  //initialize the charts when loading the page
   window.onload = startUp;
 
   </script>

@@ -50,21 +50,21 @@ def sent_letters_data(request):
     today = datetime.today().strftime('%Y-%m-%d')
 
     for check in checks:
-        print(type(check.letter_1_send_date))
-        if (str(check.letter_1_send_date) == today and check.letter_1_sent == 1):
-            letter_1_sent += 1
-        elif (str(check.letter_2_send_date) == today and check.letter_2_sent == 1):
-            letter_2_sent += 1
-        elif (str(check.letter_3_send_date) == today and check.letter_3_sent == 1):
-            letter_3_sent += 1
-        elif (str(check.letter_1_send_date) == today and check.letter_1_sent == 0):
-            letter_1_notsent += 1
-        elif (str(check.letter_2_send_date) == today and check.letter_2_sent == 0):
-            letter_2_notsent += 1
-        elif (str(check.letter_3_send_date) == today and check.letter_3_sent == 0):
-            letter_3_notsent += 1
-        else:
-            continue
+        if (check.paid_date == None):
+            if (str(check.letter_1_send_date) == today and check.letter_1_sent == 1):
+                letter_1_sent += 1
+            elif (str(check.letter_2_send_date) == today and check.letter_2_sent == 1):
+                letter_2_sent += 1
+            elif (str(check.letter_3_send_date) == today and check.letter_3_sent == 1):
+                letter_3_sent += 1
+            elif (str(check.letter_1_send_date) == today and check.letter_1_sent == 0):
+                letter_1_notsent += 1
+            elif (str(check.letter_2_send_date) == today and check.letter_2_sent == 0):
+                letter_2_notsent += 1
+            elif (str(check.letter_3_send_date) == today and check.letter_3_sent == 0):
+                letter_3_notsent += 1
+            else:
+                continue
 
     return_data = [{"lettertype": "letter 1's sent", "letterssent": letter_1_sent},
      {"lettertype": "letter 2's sent", "letterssent": letter_2_sent},
@@ -72,4 +72,29 @@ def sent_letters_data(request):
      {"lettertype": "letter 1's not sent", "letterssent": letter_1_notsent},
      {"lettertype": "letter 2's not sent", "letterssent": letter_2_notsent},
      {"lettertype": "letter 3's not sent", "letterssent": letter_3_notsent}]
+    return JsonResponse(return_data, safe=False)
+
+@login_required
+def num_checks_data(request):
+    checks = Check.objects.all()
+    clients = Client.objects.all()
+    client_count_dict = {}
+    client_ids_to_names = {}
+    for client in clients:
+
+        client_ids_to_names[client.id] = client.name
+        client_count_dict[client.name] = 0
+
+    for check in checks:
+        if check.paid_date == None:
+            client_count_dict[client_ids_to_names[check.to_client_id]] += 1
+
+    return_data = { "children": []}
+
+    for key, value in client_count_dict.items():
+        temp_dict = {}
+        temp_dict["Name"] = key
+        temp_dict["Count"] = value
+        return_data["children"].append(temp_dict)
+
     return JsonResponse(return_data, safe=False)
