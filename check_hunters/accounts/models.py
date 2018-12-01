@@ -4,8 +4,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from address.models import AddressField
-from datetime import timedelta
+import datetime
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 def validate_positive(num):
     if not num >= 0:
@@ -15,7 +18,7 @@ def validate_num(num_str):
     if not num_str.isdigit():
         raise ValidationError(f"value must be a number ({num_str})")
 
-    
+
 LETTER_TEMPLATE = """
 {date}
 
@@ -59,7 +62,7 @@ class Client(models.Model):
     Client model allows companies to configure their wait_period and late fee
     """
     name = models.CharField(max_length=200)
-    wait_period = models.DurationField(blank=True, default=timedelta(days=10))
+    wait_period = models.DurationField(blank=True, default=datetime.timedelta(days=10))
     late_fee = models.DecimalField(max_digits=15, decimal_places=2, blank=True, default=25)
     address = models.CharField(max_length=200, blank=True, null=True)
     phone_num = models.CharField(max_length=20, blank=True, null=True)
@@ -72,6 +75,11 @@ class Client(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        infoString = "{} Database Updated Client {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name)
+        logger.info(infoString)
+        super(Client, self).save(*args, **kwargs)
 
 
 class Bank(models.Model):
@@ -92,11 +100,16 @@ class Bank(models.Model):
 
     def make_name(self):
         return "bank" +  self.routing_n
-        
+
     def routing_num_is_valid(self):
         """checks if routing_num is correct"""
         # TODO
         return True
+
+    def save(self, *args, **kwargs):
+        infoString = "{} Database Updated Bank".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name)
+        logger.info(infoString)
+        super(Bank, self).save(*args, **kwargs)
 
 
 class StringToFK(models.ForeignKey):
@@ -119,7 +132,7 @@ class Account(models.Model):
     last_name1 = models.CharField(max_length=200, default='')
     first_name2 = models.CharField(max_length=200, blank=True, null=True)
     last_name2 = models.CharField(max_length=200, blank=True, null=True)
-    
+
     street_addr = models.CharField(max_length=200, default='')
     city_addr = models.CharField(max_length=200, default='')
     state_addr = models.CharField(max_length=200, default='')
@@ -143,3 +156,8 @@ class Account(models.Model):
         if self.routing_num:
             base =  self.routing_num.routing_n
         return base + ':' + self.account_num
+
+    def save(self, *args, **kwargs):
+        infoString = "{} Database Updated Account {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.account_num)
+        logger.info(infoString)
+        super(Account, self).save(*args, **kwargs)

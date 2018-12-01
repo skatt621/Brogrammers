@@ -4,6 +4,9 @@ from accounts.models import Account, Client
 from datetime import datetime
 from django.core.exceptions import ValidationError
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 def validate_positive(num):
     if not num >= 0:
@@ -56,6 +59,8 @@ class Check(models.Model):
             self.letter_1_send_date = self.created_date
             self.letter_2_send_date = self.created_date + self.to_client.wait_period
             self.letter_3_send_date = self.created_date + 2 * self.to_client.wait_period
+        infoString = "{} Database Updated Check {} to {} from Account {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.check_num, self.to_client, self.from_account)
+        logger.info(infoString)
         super(Check, self).save(*args, **kwargs)
 
     def __str__(self):
