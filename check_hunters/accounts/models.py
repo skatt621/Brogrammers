@@ -76,9 +76,11 @@ class Client(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        infoString = "{} Database Updated Client {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name)
+        infoString = "{} Updating Client {}, Old Values: {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name, self.__dict__)
         logger.info(infoString)
         super(Client, self).save(*args, **kwargs)
+        infoString = "{} Updated Client {}, New Values: {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name,  self.__dict__)
+        logger.info(infoString)
 
 
 class Bank(models.Model):
@@ -106,9 +108,11 @@ class Bank(models.Model):
         return True
 
     def save(self, *args, **kwargs):
-        infoString = "{} Database Updated Bank".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name)
+        infoString = "{} Updating Bank {}, Old Values: {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name, self.__dict__)
         logger.info(infoString)
         super(Bank, self).save(*args, **kwargs)
+        infoString = "{} Updated Bank {}, New Values: {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.name, self.__dict__)
+        logger.info(infoString)
 
 
 class StringToFK(models.ForeignKey):
@@ -157,6 +161,8 @@ class Account(models.Model):
         return base + ':' + self.account_num
 
     def save(self, *args, **kwargs):
-        infoString = "{} Database Updated Account {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.account_num)
+        infoString = "{} Updating Account {}, Old Values: {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.account_num, self.__dict__)
         logger.info(infoString)
         super(Account, self).save(*args, **kwargs)
+        infoString = "{} Updated Account {}, New Values: {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.account_num, self.__dict__)
+        logger.info(infoString)

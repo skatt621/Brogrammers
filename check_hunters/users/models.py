@@ -19,6 +19,8 @@ class User(AbstractUser):
         return is_admin or is_supervisor or self.is_superuser
 
     def save(self, *args, **kwargs):
-        infoString = "{} Database Updated User Settings".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        infoString = "{} Updating User Settings, Old Values".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.__dict__)
         logger.info(infoString)
         super(User, self).save(*args, **kwargs)
+        infoString = "{} Updated User Settings, New Values".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.__dict__)
+        logger.info(infoString)
