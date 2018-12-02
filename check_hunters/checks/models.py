@@ -59,9 +59,11 @@ class Check(models.Model):
             self.letter_1_send_date = self.created_date
             self.letter_2_send_date = self.created_date + self.to_client.wait_period
             self.letter_3_send_date = self.created_date + 2 * self.to_client.wait_period
-        infoString = "{} Database Updated Check {} to {} from Account {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.check_num, self.to_client, self.from_account)
+        infoString = "{} Updating Check {} to {} from Account {}, Old Values: {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.check_num, self.to_client, self.from_account, self.__dict__)
         logger.info(infoString)
         super(Check, self).save(*args, **kwargs)
+        infoString = "{} Updated Check {} to {} from Account {}, New Values: {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), self.check_num, self.to_client, self.from_account, self.__dict__)
+        logger.info(infoString)
 
     def __str__(self):
         return str(self.from_account) + '\t' + str(self.check_num)
