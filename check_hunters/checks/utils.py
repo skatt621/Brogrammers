@@ -10,12 +10,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 MAX_CHARS_FIT = 90
 
 LETTER_TEMPLATE = """
-
-{date}
-
-Dear {recipient_name}:
-
-Check {check_num} you wrote for ${check_amt}, dated {made_date}, which was made payable to {to_client} was returned by your bank, {bank_name}.
+Dear {recipient_name}, Check {check_num} you wrote for ${check_amt}, dated {made_date}, which was made payable to {to_client} was returned by your bank, {bank_name}.
 Unless full payment of the check is received by cash within {wait_period} days after the date this demand letter was mailed, together with ${late_fee} in bank fees, we will file a small claims court claim against you.
 You may wish to contact a lawyer to discuss your legal rights and responsibilities.
 Sincerely,
@@ -53,8 +48,8 @@ def PopulateTemplate(letters_info: dict) -> bool:
     for key, letters in letters_info.items():
         for letter_data in letters:
             rendered = letter_data['template'].format(**letter_data)
-            line_x = 50
-            line_y = height - 100
+            line_x = width - 200
+            line_y = height - (height / 3) + 50
 
             # draw address on pdf canvas
             for line in [letter_data['recipient_name'], letter_data['st_addr'], "{city}, {state} {zip}".format(**letter_data)]:
@@ -62,9 +57,16 @@ def PopulateTemplate(letters_info: dict) -> bool:
                 line_y -= 20
 
             # draw letter on pdf canvas
-            line_y = height - (height / 3)
-            for line in rendered.splitlines(rendered.count('\n')):
-                line = line.replace('\n', '')
+            line_y = height - (height / 3) - 50
+            line_x = 50
+            # write date
+            day = datetime.today().strftime("%m/%d/%Y")
+            p.drawString(line_x, line_y, day)
+            line_y -= 25
+            # write letter
+            
+            for line in rendered.split('/n'):
+                line = line.replace('.', '. ')
                 # output wrapped line.
                 while(len(line) > MAX_CHARS_FIT):
                     output_partial = line[0:MAX_CHARS_FIT]

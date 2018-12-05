@@ -19,10 +19,10 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-md-3 col-md-6">
-            <h1>Letters</h1>
+            <h1>Print Letters</h1>
             <form action="" method="post"  class="form"  id="print_letters_form">{% csrf_token %}
                 {{ filter.form.as_p }}
-                <input type="submit" id="print-btn" class="btn btn-primary"/>
+                <input type="submit" id="print-btn" class="btn btn-primary" value="Print Today's Letters"/>
             </form>
         </div>
       </div>
