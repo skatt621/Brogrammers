@@ -32,7 +32,7 @@ class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
     filterset_class = CheckFilter
     model = Check
     paginate_by = 100
-    fields = ['to_client', 'from_account', 'amount', 'made_date', 'check_num', 'paid']
+    fields = ['to_client', 'from_account', 'amount', 'current_fee', 'total', 'made_date', 'check_num', 'paid']
 
 
     def get_filterset_kwargs(self, filterset_class):
@@ -44,7 +44,6 @@ class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
         return kwargs
 
 class CheckUpdateView(LoginRequiredMixin, UpdateView):
-    # redirect_field_name = 'checks:update'
     model = Check
     form_class = CheckMarkPaidForm
     template_name = "checks/mark_paid.html"

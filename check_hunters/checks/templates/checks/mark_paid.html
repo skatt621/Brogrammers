@@ -13,6 +13,8 @@
     <p>To: {{ object.to_client.name }}</p>
     <p>From: {{ object.from_account }}</p>
     <p>Amount: ${{ object.amount }}</p>
+    <p>Fee: ${{ object.current_fee }}</p>
+    <p>Total Due: ${{ object.total }}</p>
     <p>Check Number: {{object.check_num}}</p>
     <form method="post">{% csrf_token %}
         {{ form.as_p }}

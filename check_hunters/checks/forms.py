@@ -60,7 +60,6 @@ class CheckMarkPaidForm(ModelForm):
             # we're done now if not valid
             if not valid:
                 return valid
-            # TODO if amountpaid != amount, make sure user is supervisor or admin
             return valid
 
 class PrintLettersForm(Form):

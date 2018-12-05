@@ -140,6 +140,7 @@ def ExtractCheckInfo(check: object, letter_num=1) -> dict:
         'made_date': check.made_date.strftime("%m/%d/%Y"),
         'bank_name': str(check.from_account.routing_num),
         'check_amt': check.amount,
-        'late_fee': check.to_client.late_fee,
+        'late_fee': check.current_fee(),
+        'total': check.total(),
         'wait_period': check.to_client.wait_period.days,
     }

@@ -51,6 +51,26 @@ class Check(models.Model):
             name_str += f" and {account.first_name2} {account.last_name2}"
         return name_str
 
+    def current_fee(self):
+        client_fee = self.to_client.late_fee
+        if not self.letter_1_sent:
+            return client_fee
+        else:
+            return 2 * client_fee
+
+    def total(self):
+        return self.amount + self.current_fee()
+        
+    def sent_letters_count(self):
+        if self.letter_3_sent:
+            return 3
+        elif self.letter_2_sent:
+            return 2
+        elif self.letter_1_sent:
+            return 1
+        else:
+            return 0
+
     def save(self, *args, **kwargs):
         """overriding save to set date values"""
         if not self.created_date:
