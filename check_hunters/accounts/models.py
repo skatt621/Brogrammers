@@ -19,11 +19,7 @@ def validate_num(num_str):
 
 
 LETTER_TEMPLATE = """
-{date}
-
-Dear {recipient_name}:
-
-Check {check_num} you wrote for ${check_amt}, dated {made_date}, which was made payable to {to_client} was returned by your bank, {bank_name}.
+Dear {recipient_name}, Check {check_num} you wrote for ${check_amt}, dated {made_date}, which was made payable to {to_client} was returned by your bank, {bank_name}.
 Unless full payment of the check is received by cash within {wait_period} days after the date this demand letter was mailed, together with ${late_fee} in bank fees, we will file a small claims court claim against you.
 You may wish to contact a lawyer to discuss your legal rights and responsibilities.
 Sincerely,

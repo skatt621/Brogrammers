@@ -37,6 +37,25 @@ td, th, input {
   margin-top: 20px;
 }
 
+
+div.add_check form {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+div.add_check form p {
+  width: 100%;
+  text-align: left;
+  margin: 0px 20px;
+}
+
+div.add_check span.helptext{
+  display: flow-root;
+  top: 50px;
+  text-align: center;
+}
+
 @media only screen and (min-width: 410px) and (max-width: 1200px) {
   .form {
     display: inline;
