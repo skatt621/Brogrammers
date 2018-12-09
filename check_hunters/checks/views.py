@@ -32,7 +32,7 @@ class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
     filterset_class = CheckFilter
     model = Check
     paginate_by = 100
-    fields = ['to_client', 'from_account', 'amount', 'current_fee', 'total', 'made_date', 'check_num', 'paid']
+    fields = ['to_client', 'from_account', 'amount', 'current_fee', 'total', 'made_date', 'check_num', 'paid', 'outstanding']
 
 
     def get_filterset_kwargs(self, filterset_class):
@@ -41,6 +41,7 @@ class CheckListView(SingleTableMixin, FilterView, LoginRequiredMixin, ListView):
             kwargs["data"] = {
                 'not_paid': '1'
             }
+        
         return kwargs
 
 class CheckUpdateView(LoginRequiredMixin, UpdateView):

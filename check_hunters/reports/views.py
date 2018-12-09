@@ -31,14 +31,21 @@ def paid_check_data(request):
     unpaid_checks["Name"] = "Unpaid Checks"
     unpaid_checks["Count"] = 0
 
+    outstanding_checks = {}
+    outstanding_checks["Name"] = "Outstading Checks"
+    outstanding_checks["Count"] = 0
+
     for check in checks:
         if (check.paid_date == None):
             unpaid_checks["Count"] += 1
         else:
             paid_checks["Count"] += 1
+        if (check.letter_3_sent != 0):
+            outstanding_checks["Count"] += 1
 
     return_data.append(paid_checks)
     return_data.append(unpaid_checks)
+    return_data.append(outstanding_checks)
 
     return JsonResponse(return_data, safe=False)
 
