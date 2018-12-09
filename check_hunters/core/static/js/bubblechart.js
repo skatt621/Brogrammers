@@ -5,7 +5,7 @@ function bubbleChart(apiUrl) {
 
        var margin = {top: 20, right: 20, bottom: 30, left: 150};
        var diameter = 600;
-       var color = d3.scaleOrdinal(d3.schemeCategory20);
+       var color = d3.scaleOrdinal(d3.schemeCategory20c);
 
        var bubble = d3.pack(dataset)
           .size([diameter, diameter])

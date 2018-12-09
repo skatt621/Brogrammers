@@ -41,9 +41,6 @@ class Check(models.Model):
     letter_2_sent = models.BooleanField(null=True, blank=True, default=False)
     letter_3_sent = models.BooleanField(null=True, blank=True, default=False)
 
-    def paid(self):
-        return not self.paid_date is None
-
     def name(self):
         account = self.from_account
         name_str = f"{account.first_name1} {account.last_name1}"
@@ -60,7 +57,7 @@ class Check(models.Model):
 
     def total(self):
         return self.amount + self.current_fee()
-        
+
     def sent_letters_count(self):
         if self.letter_3_sent:
             return 3
@@ -93,3 +90,9 @@ class Check(models.Model):
 
     def paid(self):
         return self.paid_date != None
+
+    def outstanding(self):
+        if self.letter_3_sent == 1:
+            return "yes"
+        else:
+            return "no"
